@@ -1,7 +1,12 @@
+import { ReactNode } from "react";
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
-export default function DashboardLayout({ children }) {
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
