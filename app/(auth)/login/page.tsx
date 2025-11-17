@@ -13,7 +13,7 @@ export default function LoginPage() {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const { data } = await axios.post("/api/auth/login", form);
+            const { data } = await axios.post("/api/login", form);
             localStorage.setItem("token", data.token);
             router.push("/dashboard");
         } catch (error) {

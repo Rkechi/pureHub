@@ -18,14 +18,30 @@ import {
   Calendar,
   Bell,
   Database,
-  Link as LinkIcon,
   ArrowRight
 } from 'lucide-react';
 
-export default function FeaturesPage() {
-  const [activeFeature, setActiveFeature] = useState('sensors');
+interface Feature {
+  id: string;
+  icon: any;
+  title: string;
+  subtitle: string;
+  description: string;
+  benefits: string[];
+  gradient: string;
+  image: string;
+}
 
-  const mainFeatures = [
+interface AdditionalFeature {
+  icon: any;
+  title: string;
+  description: string;
+}
+
+export default function FeaturesPage() {
+  const [activeFeature, setActiveFeature] = useState<string>('sensors');
+
+  const mainFeatures: Feature[] = [
     {
       id: 'sensors',
       icon: Activity,
@@ -88,18 +104,18 @@ export default function FeaturesPage() {
     }
   ];
 
-  const additionalFeatures = [
+  const additionalFeatures: AdditionalFeature[] = [
     { icon: Wifi, title: "Cloud Integration", description: "Seamless AWS cloud infrastructure for scalability" },
     { icon: Bell, title: "Smart Alerts", description: "Instant notifications for high VOC levels or issues" },
     { icon: Users, title: "Team Management", description: "Assign tasks and track team performance" },
     { icon: Calendar, title: "Smart Scheduling", description: "Automated scheduling based on AI predictions" },
     { icon: FileText, title: "Digital Logs", description: "Complete digital record of all cleaning activities" },
     { icon: Database, title: "Data Analytics", description: "Deep insights into cleaning patterns and efficiency" },
-    { icon: LinkIcon, title: "Third-Party Integration", description: "Connect with your existing tools and systems" },
+    { icon: Wifi, title: "Third-Party Integration", description: "Connect with your existing tools and systems" },
     { icon: Shield, title: "Enterprise Security", description: "Bank-level security for your sensitive data" },
   ];
 
-  const activeFeatureData = mainFeatures.find(f => f.id === activeFeature);
+  const activeFeatureData = mainFeatures.find(f => f.id === activeFeature) || mainFeatures[0];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">

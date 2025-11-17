@@ -129,14 +129,14 @@ export default function LandingPage() {
               </a>
 
               <a
-                href="/(auth)/login"
+                href="/login"
                 className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
               >
                 Login
               </a>
 
               <a
-                href="/(auth)/register"
+                href="/register"
                 className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all"
               >
                 Get Started
@@ -181,13 +181,13 @@ export default function LandingPage() {
                 About
               </a>
               <a
-                href="/(auth)/login"
+                href="/login"
                 className="block text-gray-700 hover:text-blue-600"
               >
                 Login
               </a>
               <a
-                href="/(auth)/register"
+                href="/register"
                 className="block px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center rounded-lg hover:shadow-lg transition-all"
               >
                 Get Started
@@ -222,7 +222,7 @@ export default function LandingPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 max-[320px]:gap-2">
                 <a
-                  href="/(auth)/register"
+                  href="/register"
                   className="px-8 py-4 max-[320px]:px-5 max-[320px]:py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl transition-all flex items-center justify-center gap-2 group text-sm"
                 >
                   Start Free Trial
@@ -395,7 +395,7 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-[320px]:gap-3">
               <a
-                href="/(auth)/register"
+                href="/register"
                 className="px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center gap-2 max-[320px]:px-6 max-[320px]:py-3"
               >
                 Start Free Trial

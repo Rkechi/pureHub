@@ -9,19 +9,36 @@ export default function RegisterPage() {
     const router = useRouter();
 
     async function handleSubmit(e: any) {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            // Simulated API call - replace with actual axios call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            // await axios.post("/api/auth/register", form);
-            router.push("/(auth)/login");
-        } catch (error) {
-            console.error("Registration failed:", error);
-        } finally {
-            setIsLoading(false);
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+        const res = await fetch("/api/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message || "Registration failed");
+            return;
         }
+
+        // Registration successful
+        router.push("/login");
+
+    } catch (error) {
+        console.error("Registration failed:", error);
+        alert("Something went wrong. Please try again.");
+    } finally {
+        setIsLoading(false);
     }
+}
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 p-4 relative overflow-hidden">
@@ -92,7 +109,7 @@ export default function RegisterPage() {
                     <div className="text-center pt-2">
                         <p className="text-gray-600 text-sm">
                             Already have an account?{' '}
-                            <a href="/(auth)/login" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
+                            <a href="/login" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
                                 Sign in
                             </a>
                         </p>
