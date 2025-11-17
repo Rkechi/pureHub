@@ -175,7 +175,7 @@ export default function LiveMonitoringPage() {
             }`}
           >
             <div className="flex justify-between">
-              <h2 className="font-semibold text-lg">{sensor.area}</h2>
+              <h2 className="font-semibold text-lg text-gray-700">{sensor.area}</h2>
               {sensor.status === "offline" ? (
                 <WifiOff className="text-gray-600" />
               ) : (
@@ -183,23 +183,23 @@ export default function LiveMonitoringPage() {
               )}
             </div>
 
-            <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
+            <p className="text-sm text-gray-900 mt-1 flex items-center gap-1">
               <Users className="w-4 h-4" />
               Cleaner: {sensor.cleaner ?? "No data"}
             </p>
 
             <div className="mt-4 space-y-2">
-              <p className="text-sm flex items-center gap-2">
+              <p className="text-sm flex items-center gap-2 text-gray-700">
                 <Activity className="w-4 h-4 text-red-600" />
                 VOC: {sensor.vocLevel ?? "N/A"}
               </p>
 
-              <p className="text-sm flex items-center gap-2">
+              <p className="text-sm flex items-center gap-2 text-gray-700">
                 <Droplets className="w-4 h-4 text-blue-600" />
                 Humidity: {sensor.humidity ?? "N/A"}%
               </p>
 
-              <p className="text-sm flex items-center gap-2">
+              <p className="text-sm flex items-center gap-2 text-gray-700">
                 <Thermometer className="w-4 h-4 text-orange-500" />
                 Temp: {sensor.temperature ?? "N/A"}°C
               </p>
