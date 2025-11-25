@@ -150,9 +150,9 @@ export default function LandingPage() {
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 text-gray-800" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-6 h-6 text-gray-800" />
               )}
             </button>
           </div>
@@ -402,7 +402,7 @@ export default function LandingPage() {
                 <ArrowRight className="w-5 h-5" />
               </a>
               <a
-                href="#features"
+                href="/features"
                 className="px-8 py-4 bg-blue-700 text-white rounded-xl font-semibold hover:bg-blue-800 transition-all max-[320px]:px-6 max-[320px]:py-3"
               >
                 Learn More

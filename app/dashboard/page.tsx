@@ -97,29 +97,29 @@ export default function DashboardHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-3 sm:p-4 lg:p-6">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-            <p className="text-gray-600 mt-1">Real-time monitoring and analytics</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard Overview</h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">Real-time monitoring and analytics</p>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg">
+          <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-green-100 text-green-700 rounded-lg text-sm">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="font-semibold">Live</span>
           </div>
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {metrics.map((metric, i) => {
             const Icon = metric.icon;
             return (
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.02 }}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
+                className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all"
               >
                 <div className="flex justify-between items-center mb-4">
                   <div
@@ -128,16 +128,14 @@ export default function DashboardHome() {
                     <Icon className="w-6 h-6" />
                   </div>
                   <div
-                    className={`px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ${
-                      metric.trend > 0
-                        ? "bg-red-100 text-red-700"
-                        : "bg-green-100 text-green-700"
-                    }`}
+                    className={`px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ${metric.trend > 0
+                      ? "bg-red-100 text-red-700"
+                      : "bg-green-100 text-green-700"
+                      }`}
                   >
                     <TrendingUp
-                      className={`w-3 h-3 ${
-                        metric.trend > 0 ? "rotate-180" : ""
-                      }`}
+                      className={`w-3 h-3 ${metric.trend > 0 ? "rotate-180" : ""
+                        }`}
                     />
                     {Math.abs(metric.trend)}%
                   </div>
@@ -159,18 +157,17 @@ export default function DashboardHome() {
                   </div>
                 </div>
                 <div
-                  className={`mt-4 h-1 rounded-full ${
-                    metric.status === "good" ? "bg-green-500" : "bg-yellow-500"
-                  }`}
+                  className={`mt-4 h-1 rounded-full ${metric.status === "good" ? "bg-green-500" : "bg-yellow-500"
+                    }`}
                 ></div>
               </motion.div>
             );
           })}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Recent Activities */}
-          <div className="lg:col-span-2 bg-white rounded-2xl px-6 shadow-lg">
+          <div className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl p-4 sm:px-6 shadow-lg">
             <div className="flex justify-between items-center mb-6 pt-3">
               <h2 className="text-xl font-bold text-gray-900">Recent Activities</h2>
               <a
@@ -213,25 +210,23 @@ export default function DashboardHome() {
           </div>
 
           {/* Alerts & Quick Actions */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Alerts</h2>
             <div className="space-y-4">
               {alerts.map((alert, i) => (
                 <div
                   key={i}
-                  className={`p-4 rounded-xl border-l-4 ${
-                    alert.type === "warning"
-                      ? "bg-yellow-50 border-yellow-500"
-                      : "bg-blue-50 border-blue-500"
-                  }`}
+                  className={`p-4 rounded-xl border-l-4 ${alert.type === "warning"
+                    ? "bg-yellow-50 border-yellow-500"
+                    : "bg-blue-50 border-blue-500"
+                    }`}
                 >
                   <div className="flex gap-3">
                     <AlertTriangle
-                      className={`w-5 h-5 flex-shrink-0 ${
-                        alert.type === "warning"
-                          ? "text-yellow-600"
-                          : "text-blue-600"
-                      }`}
+                      className={`w-5 h-5 flex-shrink-0 ${alert.type === "warning"
+                        ? "text-yellow-600"
+                        : "text-blue-600"
+                        }`}
                     />
                     <div className="flex-1">
                       <p className="text-sm text-gray-900 font-medium">
