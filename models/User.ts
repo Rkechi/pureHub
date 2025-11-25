@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 export interface IUser extends Document {
+    _id: Types.ObjectId;
     name: string;
     email: string,
     password: string,
@@ -67,7 +68,7 @@ const UserSchema = new Schema<IUser>({
 
 // Index for faster queries
 UserSchema.index({ email: 1 });
-UserSchema.index({ role: 1, isActive: 1});
+UserSchema.index({ role: 1, isActive: 1 });
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 
