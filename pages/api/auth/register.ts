@@ -13,6 +13,7 @@ interface RegisterResponse {
         id: string;
         name: string;
         email: string;
+        role: 'admin' | 'manager' | 'cleaner';
     };
 }
 
@@ -70,8 +71,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             name: name.trim(),
             email: email.toLowerCase().trim(),
             password: hashedPassword,
-            company: company.trim(),
-            phone: phone?.trim(),
+            company: company?.trim() || '',
+            phone: phone?.trim() || '',
             role: 'manager', // Default role
             isActive: true,
         });
@@ -108,18 +109,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 id: user._id.toString(),
                 name: user.name,
                 email: user.email,
+                role: user.role,
             }
         });
     } catch (error: any) {
-        console.error('Registration error.', error);
+        console.error('Registration error:', error);
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
 
         // Handle mongoose validation error
         if (error.name === 'ValidationError') {
-            const messages = Object(error.errors).map((e: any) => e.message);
-            Object.values(error.errors).map((e: any) => e.message);
+            const messages = Object.values(error.errors).map((e: any) => e.message);
             return res.status(400).json({
                 success: false,
-                message: messages.join(',')
+                message: messages.join(', ')
             });
         }
 

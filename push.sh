@@ -1,3 +1,3 @@
 git add .
-git commit -m "Client ready Update"
+git commit -m "Bugs fixed"
 git push
