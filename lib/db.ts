@@ -1,18 +1,31 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/purehive';
+const MONGODB_URL: string = process.env.MONGODB_URL as string;
 
-if (!MONGODB_URL) {
-    throw new Error("Please define the MONGODB_URL environment variables inside .env.local");
-}
+// Prevent multiple connections during hot reload in dev
+let isConnected: boolean = false;
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+export const connectDB = async (): Promise<void> => {
+  if (isConnected) {
+    console.log("MongoDB already connected");
+    return;
+  }
 
-export default async function dbConnect() {
-    if (cached.conn) return cached.conn;
-    if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URL).then((mongoose) => mongoose);
-    }
-    cached.conn = await cached.promise;
-    return cached.conn;
-}
+  if (!MONGODB_URL) {
+    throw new Error("❌ MONGODB_URL is missing in .env file");
+  }
+
+  try {
+    const conn = await mongoose.connect(MONGODB_URL, {
+      dbName: "PureHive",
+    });
+
+    isConnected = conn.connections[0].readyState === 1;
+
+    console.log("✅ MongoDB Connected:", conn.connection.host);
+
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error);
+    throw error;
+  }
+};

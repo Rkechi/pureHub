@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "@/lib/db";
+import { connectDB } from "@/lib/db";
 import CleaningLog from "@/models/CleaningLog";
 import { logToBlockchain } from "@/lib/blockchain";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await dbConnect();
+  await connectDB();
 
   if (req.method === "POST") {
     const blockchainData = await logToBlockchain(req.body);

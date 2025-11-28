@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '@/lib/db';
+import { connectDB } from '@/lib/db';
 import CleaningLog from '@/models/CleaningLog';
 
 interface ESGReport {
@@ -30,7 +30,7 @@ interface ESGReport {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ESGReport>) {
-    if(req.method !== 'GET') {
+    if (req.method !== 'GET') {
         return res.status(405).json({
             success: false,
             message: 'Method not allowed'
@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     try {
-        await dbConnect();
+        await connectDB();
 
         const { startDate, endDate } = req.query;
 
@@ -104,7 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             data: {
                 environmental: {
                     totalWaterUsed: Math.round(totalWaterUsed * 10) / 10,
-                    totalChemicalUsed: Math.round(totalChemicalUsed * 10) / 10 ,
+                    totalChemicalUsed: Math.round(totalChemicalUsed * 10) / 10,
                     avgVOCLevel: Math.round(avgVOCLevel * 100) / 100,
                     waterSaved: Math.round(waterSaved * 10) / 10,
                     co2Reduced: Math.round(co2Reduced * 10) / 10,

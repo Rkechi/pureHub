@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dbConnect from '@/lib/db';
+import { connectDB } from '@/lib/db';
 import User from '@/models/User';
 
 interface LoginResponse {
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     try {
         // Connect to db
-        await dbConnect();
+        await connectDB();
 
         const { email, password } = req.body;
 
