@@ -1,3 +1,3 @@
 git add .
-git commit -m "All Loaders Update"
+git commit -m "All Loaders Updated"
 git push
