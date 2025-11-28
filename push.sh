@@ -1,3 +1,3 @@
 git add .
-git commit -m "Bugs fixed"
+git commit -m "Small touches"
 git push
