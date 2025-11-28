@@ -1,26 +1,22 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import ButtonLoader from '@/components/loaders/ButtonLoader';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function LoginPage() {
     const [form, setForm] = useState({ email: "", password: "" });
-    const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
+    const [error, setError] = useState("");
+    const { login, isLoading } = useAuth();
 
     async function handleSubmit(e: any) {
         e.preventDefault();
-        setIsLoading(true);
+        setError("");
         try {
-            const { data } = await axios.post("/api/login", form);
-            localStorage.setItem("token", data.token);
-            router.push("/dashboard");
-        } catch (error) {
-            console.error("Login failed:", error);
-        } finally {
-            setIsLoading(false);
+            await login(form.email, form.password);
+            // Redirect handled by AuthContext
+        } catch (err: any) {
+            setError(err.message || "Login failed. Please try again.");
         }
     }
 
@@ -36,6 +32,12 @@ export default function LoginPage() {
                     <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
                     <p className="text-purple-200 text-sm">Sign in to continue to your account</p>
                 </div>
+
+                {error && (
+                    <div className="bg-red-500/20 border border-red-500/50 text-red-100 px-4 py-3 rounded-xl text-sm">
+                        {error}
+                    </div>
+                )}
 
                 <div className="space-y-4">
                     <div className="relative">
@@ -78,8 +80,8 @@ export default function LoginPage() {
                 </button>
 
                 <div className="text-center">
-                    <a href="#" className="text-purple-200 hover:text-white text-sm transition-colors">
-                        Forgot your password?
+                    <a href="/register" className="text-purple-200 hover:text-white text-sm transition-colors">
+                        Don't have an account? Sign up
                     </a>
                 </div>
             </form>

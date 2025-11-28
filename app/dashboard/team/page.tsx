@@ -16,28 +16,10 @@ import {
   Save,
   UserPlus,
   Edit,
+  Trash2,
+  Loader2,
 } from "lucide-react";
-
-interface TeamMember {
-  id: number;
-  name: string;
-  role: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  rating: number;
-  tasksCompleted: number;
-  efficiency: number;
-  specialization: string;
-  status: string;
-  joinDate: string;
-  performance: {
-    thisWeek: number;
-    thisMonth: number;
-    avgTime: string;
-    quality: number;
-  };
-}
+import { useTeamMembers } from "@/hooks/useTeamMembers";
 
 interface NewMember {
   name: string;
@@ -48,9 +30,12 @@ interface NewMember {
 }
 
 export default function TeamPage() {
+  const { members, loading, error, addMember, updateMember, deleteMember } = useTeamMembers();
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [selectedMember, setSelectedMember] = useState<any | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [actionLoading, setActionLoading] = useState(false);
+  const [actionError, setActionError] = useState("");
   const [newMember, setNewMember] = useState<NewMember>({
     name: "",
     email: "",
@@ -59,131 +44,50 @@ export default function TeamPage() {
     specialization: "",
   });
 
-  const teamMembers: TeamMember[] = [
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Senior Cleaner",
-      email: "john.doe@purehive.com",
-      phone: "+234 123 456 7890",
-      avatar: "JD",
-      rating: 4.8,
-      tasksCompleted: 156,
-      efficiency: 94,
-      specialization: "Deep Cleaning",
-      status: "active",
-      joinDate: "Jan 2024",
-      performance: {
-        thisWeek: 12,
-        thisMonth: 48,
-        avgTime: "25 mins",
-        quality: 95,
-      },
-    },
-    {
-      id: 2,
-      name: "Sarah Smith",
-      role: "Cleaning Specialist",
-      email: "sarah.smith@purehive.com",
-      phone: "+234 123 456 7891",
-      avatar: "SS",
-      rating: 4.9,
-      tasksCompleted: 189,
-      efficiency: 97,
-      specialization: "Office Spaces",
-      status: "active",
-      joinDate: "Feb 2024",
-      performance: {
-        thisWeek: 15,
-        thisMonth: 52,
-        avgTime: "22 mins",
-        quality: 98,
-      },
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      role: "Restroom Specialist",
-      email: "mike.johnson@purehive.com",
-      phone: "+234 123 456 7892",
-      avatar: "MJ",
-      rating: 4.7,
-      tasksCompleted: 142,
-      efficiency: 91,
-      specialization: "Restrooms",
-      status: "active",
-      joinDate: "Mar 2024",
-      performance: {
-        thisWeek: 10,
-        thisMonth: 45,
-        avgTime: "28 mins",
-        quality: 92,
-      },
-    },
-    {
-      id: 4,
-      name: "Emily Brown",
-      role: "Kitchen Specialist",
-      email: "emily.brown@purehive.com",
-      phone: "+234 123 456 7893",
-      avatar: "EB",
-      rating: 5.0,
-      tasksCompleted: 98,
-      efficiency: 99,
-      specialization: "Food Areas",
-      status: "active",
-      joinDate: "Apr 2024",
-      performance: {
-        thisWeek: 8,
-        thisMonth: 32,
-        avgTime: "30 mins",
-        quality: 100,
-      },
-    },
-    {
-      id: 5,
-      name: "David Lee",
-      role: "Floor Care Specialist",
-      email: "david.lee@purehive.com",
-      phone: "+234 123 456 7894",
-      avatar: "DL",
-      rating: 4.6,
-      tasksCompleted: 134,
-      efficiency: 89,
-      specialization: "Floor Maintenance",
-      status: "on-leave",
-      joinDate: "Jan 2024",
-      performance: {
-        thisWeek: 0,
-        thisMonth: 38,
-        avgTime: "32 mins",
-        quality: 90,
-      },
-    },
-  ];
-
   const stats = {
-    totalMembers: teamMembers.length,
-    activeMembers: teamMembers.filter((m) => m.status === "active").length,
-    avgRating: (
-      teamMembers.reduce((sum, m) => sum + m.rating, 0) / teamMembers.length
-    ).toFixed(1),
-    totalTasks: teamMembers.reduce((sum, m) => sum + m.tasksCompleted, 0),
+    totalMembers: members.length,
+    activeMembers: members.filter((m) => m.status === "active").length,
+    avgRating: members.length > 0
+      ? (members.reduce((sum, m) => sum + m.rating, 0) / members.length).toFixed(1)
+      : "0.0",
+    totalTasks: members.reduce((sum, m) => sum + m.tasksCompleted, 0),
   };
 
-  const handleAddMember = () => {
-    console.log("Adding member:", newMember);
-    setShowAddModal(false);
-    setNewMember({
-      name: "",
-      email: "",
-      phone: "",
-      role: "",
-      specialization: "",
-    });
+  const handleAddMember = async () => {
+    setActionLoading(true);
+    setActionError("");
+
+    const result = await addMember(newMember);
+
+    if (result.success) {
+      setShowAddModal(false);
+      setNewMember({
+        name: "",
+        email: "",
+        phone: "",
+        role: "",
+        specialization: "",
+      });
+    } else {
+      setActionError(result.error || "Failed to add member");
+    }
+
+    setActionLoading(false);
   };
 
-  const filteredMembers = teamMembers.filter(
+  const handleDeleteMember = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to remove ${name} from the team?`)) {
+      return;
+    }
+
+    const result = await deleteMember(id);
+
+    if (!result.success) {
+      alert(result.error || "Failed to delete member");
+    }
+  };
+
+  const filteredMembers = members.filter(
     (m) =>
       m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       m.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -253,444 +157,402 @@ export default function TeamPage() {
           </div>
         </div>
 
-        {/* SEARCH */}
-        <div className="bg-white rounded-2xl shadow-lg p-6">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="relative md:col-span-2">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+        {/* SEARCH & FILTERS */}
+        <div className="bg-white rounded-xl shadow p-4">
+          <div className="flex gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search by name, role or specialization..."
+                placeholder="Search by name, role, or specialization..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <button className="flex items-center justify-center gap-2 bg-gray-100 rounded-xl px-4 py-3 hover:bg-gray-200 transition-colors font-semibold text-gray-700">
+            <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-2">
               <Filter className="w-5 h-5" />
               Filter
             </button>
           </div>
         </div>
 
-        {/* GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredMembers.map((member) => (
-            <div
-              key={member.id}
-              onClick={() => setSelectedMember(member)}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl cursor-pointer transition-all"
-            >
-              {/* TOP ROW */}
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex gap-3 items-center">
-                  <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-2xl flex items-center justify-center text-lg font-bold">
-                    {member.avatar}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900">{member.name}</h3>
-                    <p className="text-sm text-gray-600">{member.role}</p>
-                  </div>
-                </div>
-
-                <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <MoreVertical className="w-5 h-5 text-gray-600" />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-1 items-center">
-                  <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                  <span className="font-semibold text-gray-900">{member.rating}</span>
-                  <span className="text-sm text-gray-600">
-                    ({member.tasksCompleted} tasks)
-                  </span>
-                </div>
-
-                <span
-                  className={`px-3 py-1 text-xs rounded-lg font-semibold ${getStatusBadge(
-                    member.status
-                  )}`}
-                >
-                  {member.status}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-blue-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-600">This Week</p>
-                  <p className="font-bold text-lg text-gray-900">
-                    {member.performance.thisWeek}
-                  </p>
-                </div>
-
-                <div className="bg-green-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-600">Efficiency</p>
-                  <p className="font-bold text-lg text-gray-900">{member.efficiency}%</p>
-                </div>
-              </div>
-
-              <div className="border-t border-gray-200 pt-3">
-                <p className="text-xs text-gray-600 mb-1">Specialization</p>
-                <p className="font-semibold text-gray-900">{member.specialization}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* TOP PERFORMERS */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
-            <Award className="w-6 h-6 text-yellow-600" />
-            Top Performers This Month
-          </h2>
-
-          <div className="space-y-3">
-            {[...teamMembers]
-              .sort(
-                (a, b) => b.performance.thisMonth - a.performance.thisMonth
-              )
-              .slice(0, 5)
-              .map((m, i) => (
-                <div
-                  key={m.id}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-                >
-                  <div className="flex gap-4 items-center">
-                    <div
-                      className={`w-8 h-8 rounded-lg text-white font-bold flex items-center justify-center ${
-                        i === 0
-                          ? "bg-yellow-500"
-                          : i === 1
-                          ? "bg-gray-400"
-                          : i === 2
-                          ? "bg-orange-600"
-                          : "bg-blue-500"
-                      }`}
-                    >
-                      {i + 1}
-                    </div>
-
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center text-white font-bold">
-                      {m.avatar}
-                    </div>
-
-                    <div>
-                      <p className="font-semibold text-gray-900">{m.name}</p>
-                      <p className="text-sm text-gray-600">{m.role}</p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="font-bold text-gray-900">
-                      {m.performance.thisMonth} tasks
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {m.performance.quality}% quality
-                    </p>
-                  </div>
-                </div>
-              ))}
+        {/* ERROR STATE */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
+            {error}
           </div>
-        </div>
+        )}
 
-        {/* PERFORMANCE + ATTENDANCE */}
-        <div className="grid lg:grid-cols-2 gap-6">
-          {/* TEAM PERFORMANCE */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Team Performance</h2>
-
-            {[
-              { label: "Average Efficiency", value: 94, color: "bg-green-500" },
-              { label: "Task Completion Rate", value: 97, color: "bg-blue-500" },
-              { label: "Quality Score", value: 95, color: "bg-purple-500" },
-            ].map((item, index) => (
-              <div key={index} className="mb-4 last:mb-0">
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm text-gray-600">{item.label}</span>
-                  <span className="font-bold text-gray-900">{item.value}%</span>
+        {/* LOADING STATE */}
+        {loading ? (
+          <div className="bg-white rounded-xl shadow p-12 text-center">
+            <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+            <p className="text-gray-600">Loading team members...</p>
+          </div>
+        ) : (
+          /* TEAM MEMBERS GRID */
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredMembers.map((member) => (
+              <div
+                key={member._id}
+                className="bg-white rounded-xl shadow hover:shadow-xl transition-all border border-gray-100 overflow-hidden"
+              >
+                <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-4 text-white">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-lg font-bold">
+                        {member.avatar || member.name.substring(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg">{member.name}</h3>
+                        <p className="text-blue-100 text-sm">{member.role}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteMember(member._id, member.name)}
+                      className="p-1 hover:bg-white/20 rounded"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-200 h-2 rounded-full">
-                  <div
-                    className={`${item.color} h-2 rounded-full`}
-                    style={{ width: `${item.value}%` }}
-                  ></div>
+
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      <span className="font-semibold">{member.rating}</span>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(
+                        member.status
+                      )}`}
+                    >
+                      {member.status}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Mail className="w-4 h-4" />
+                      <span className="truncate">{member.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Phone className="w-4 h-4" />
+                      <span>{member.phone}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Award className="w-4 h-4" />
+                      <span>{member.specialization}</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-3 border-t">
+                    <div>
+                      <p className="text-xs text-gray-500">Tasks</p>
+                      <p className="font-semibold">{member.tasksCompleted}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Efficiency</p>
+                      <p className="font-semibold text-green-600">
+                        {member.efficiency}%
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedMember(member)}
+                    className="w-full mt-2 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-medium"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             ))}
-          </div>
 
-          {/* ATTENDANCE */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Attendance This Week</h2>
-
-            <div className="space-y-3">
-              {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
-                (day) => (
-                  <div
-                    key={day}
-                    className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+            {filteredMembers.length === 0 && !loading && (
+              <div className="col-span-full bg-white rounded-xl shadow p-12 text-center">
+                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No team members found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  {searchQuery
+                    ? "Try adjusting your search"
+                    : "Get started by adding your first team member"}
+                </p>
+                {!searchQuery && (
+                  <button
+                    onClick={() => setShowAddModal(true)}
+                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all inline-flex items-center gap-2"
                   >
-                    <span className="font-semibold text-gray-900">{day}</span>
-                    <div className="flex gap-2 items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span className="text-gray-700">
-                        {
-                          teamMembers.filter((m) => m.status === "active")
-                            .length
-                        }
-                        /{teamMembers.length}
-                      </span>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
+                    <UserPlus className="w-5 h-5" />
+                    Add First Member
+                  </button>
+                )}
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
 
       {/* ADD MEMBER MODAL */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Add Team Member</h2>
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-600" />
-              </button>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-6 text-white">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Add Team Member</h2>
+                <button
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setActionError("");
+                  }}
+                  className="p-1 hover:bg-white/20 rounded"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              {/* NAME */}
+            <div className="p-6 space-y-4">
+              {actionError && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                  {actionError}
+                </div>
+              )}
+
               <div>
-                <label className="block mb-2 text-sm font-semibold text-gray-700">
-                  Full Name
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
                 </label>
                 <input
                   type="text"
+                  required
                   value={newMember.name}
                   onChange={(e) =>
                     setNewMember({ ...newMember, name: e.target.value })
                   }
-                  className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="Enter full name"
+                  className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="John Doe"
                 />
               </div>
 
-              {/* EMAIL + PHONE */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="email"
-                      value={newMember.email}
-                      onChange={(e) =>
-                        setNewMember({ ...newMember, email: e.target.value })
-                      }
-                      className="w-full border-2 border-gray-200 pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
-                      placeholder="email@example.com"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="tel"
-                      value={newMember.phone}
-                      onChange={(e) =>
-                        setNewMember({ ...newMember, phone: e.target.value })
-                      }
-                      className="w-full border-2 border-gray-200 pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
-                      placeholder="+234 XXX XXX XXXX"
-                    />
-                  </div>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={newMember.email}
+                  onChange={(e) =>
+                    setNewMember({ ...newMember, email: e.target.value })
+                  }
+                  className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="john@purehive.com"
+                />
               </div>
 
-              {/* ROLE + SPECIALIZATION */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
-                    Role
-                  </label>
-                  <select
-                    value={newMember.role}
-                    onChange={(e) =>
-                      setNewMember({ ...newMember, role: e.target.value })
-                    }
-                    className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
-                  >
-                    <option value="">Select role...</option>
-                    <option value="Senior Cleaner">Senior Cleaner</option>
-                    <option value="Cleaning Specialist">Cleaning Specialist</option>
-                    <option value="Restroom Specialist">Restroom Specialist</option>
-                    <option value="Kitchen Specialist">Kitchen Specialist</option>
-                    <option value="Floor Care Specialist">Floor Care Specialist</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
-                    Specialization
-                  </label>
-                  <input
-                    type="text"
-                    value={newMember.specialization}
-                    onChange={(e) =>
-                      setNewMember({
-                        ...newMember,
-                        specialization: e.target.value,
-                      })
-                    }
-                    className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
-                    placeholder="e.g., Deep Cleaning"
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={newMember.phone}
+                  onChange={(e) =>
+                    setNewMember({ ...newMember, phone: e.target.value })
+                  }
+                  className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="+234 123 456 7890"
+                />
               </div>
-            </div>
 
-            <div className="flex gap-4 mt-8">
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="flex-1 border-2 border-gray-300 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Role *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={newMember.role}
+                  onChange={(e) =>
+                    setNewMember({ ...newMember, role: e.target.value })
+                  }
+                  className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Senior Cleaner"
+                />
+              </div>
 
-              <button
-                onClick={handleAddMember}
-                className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
-              >
-                <Save className="w-5 h-5" />
-                Add Member
-              </button>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Specialization *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={newMember.specialization}
+                  onChange={(e) =>
+                    setNewMember({
+                      ...newMember,
+                      specialization: e.target.value,
+                    })
+                  }
+                  className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Deep Cleaning, Office Spaces, etc."
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setActionError("");
+                  }}
+                  className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                  disabled={actionLoading}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddMember}
+                  disabled={actionLoading}
+                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {actionLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Adding...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-5 h-5" />
+                      Add Member
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* MEMBER DETAIL MODAL */}
+      {/* MEMBER DETAILS MODAL */}
       {selectedMember && (
-        <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-          onClick={() => setSelectedMember(null)}
-        >
-          <div
-            className="bg-white rounded-3xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex justify-between items-start mb-6">
-              <div className="flex gap-4 items-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl text-white flex items-center justify-center font-bold text-2xl">
-                  {selectedMember.avatar}
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-6 text-white">
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-2xl font-bold">
+                    {selectedMember.avatar || selectedMember.name.substring(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold">{selectedMember.name}</h2>
+                    <p className="text-blue-100">{selectedMember.role}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedMember(null)}
+                  className="p-1 hover:bg-white/20 rounded"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-blue-600" />
+                    Contact Information
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-gray-600">
+                      <span className="font-medium">Email:</span>{" "}
+                      {selectedMember.email}
+                    </p>
+                    <p className="text-gray-600">
+                      <span className="font-medium">Phone:</span>{" "}
+                      {selectedMember.phone}
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedMember.name}</h2>
-                  <p className="text-gray-600">{selectedMember.role}</p>
-
-                  <div className="flex gap-2 items-center mt-2">
-                    <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                    <span className="font-bold text-gray-900">{selectedMember.rating}</span>
-
-                    <span
-                      className={`ml-2 px-3 py-1 text-xs rounded-lg font-semibold ${getStatusBadge(
-                        selectedMember.status
-                      )}`}
-                    >
-                      {selectedMember.status}
-                    </span>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-blue-600" />
+                    Performance
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-gray-600">
+                      <span className="font-medium">Rating:</span>{" "}
+                      <span className="text-yellow-600">
+                        {selectedMember.rating} ⭐
+                      </span>
+                    </p>
+                    <p className="text-gray-600">
+                      <span className="font-medium">Efficiency:</span>{" "}
+                      <span className="text-green-600">
+                        {selectedMember.efficiency}%
+                      </span>
+                    </p>
+                    <p className="text-gray-600">
+                      <span className="font-medium">Tasks Completed:</span>{" "}
+                      {selectedMember.tasksCompleted}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <button
-                onClick={() => setSelectedMember(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-600" />
-              </button>
-            </div>
-
-            {/* CONTACT & SPECIALIZATION */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="space-y-3">
-                <div className="flex gap-2 items-center text-gray-700">
-                  <Mail className="w-5 h-5 text-gray-400" />
-                  <span>{selectedMember.email}</span>
+              <div className="border-t pt-4">
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  Recent Performance
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-blue-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-600">This Week</p>
+                    <p className="text-xl font-bold text-blue-600">
+                      {selectedMember.performance.thisWeek}
+                    </p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-600">This Month</p>
+                    <p className="text-xl font-bold text-green-600">
+                      {selectedMember.performance.thisMonth}
+                    </p>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-600">Avg Time</p>
+                    <p className="text-xl font-bold text-purple-600">
+                      {selectedMember.performance.avgTime}
+                    </p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-600">Quality</p>
+                    <p className="text-xl font-bold text-yellow-600">
+                      {selectedMember.performance.quality}%
+                    </p>
+                  </div>
                 </div>
-
-                <div className="flex gap-2 items-center text-gray-700">
-                  <Phone className="w-5 h-5 text-gray-400" />
-                  <span>{selectedMember.phone}</span>
-                </div>
-
-                <div className="flex gap-2 items-center text-gray-700">
-                  <Calendar className="w-5 h-5 text-gray-400" />
-                  <span>Joined {selectedMember.joinDate}</span>
-                </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-4">
-                <h3 className="font-bold mb-2 text-gray-900">Specialization</h3>
-                <p className="text-gray-700">{selectedMember.specialization}</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setSelectedMember(null)}
+                  className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                >
+                  Close
+                </button>
+                <button className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center gap-2">
+                  <Edit className="w-5 h-5" />
+                  Edit Member
+                </button>
               </div>
-            </div>
-
-            {/* PERFORMANCE NUMBERS */}
-            <div className="grid grid-cols-4 gap-4 mb-6">
-              <div className="bg-blue-50 rounded-xl p-4 text-center">
-                <p className="text-sm text-gray-600 mb-1">This Week</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {selectedMember.performance.thisWeek}
-                </p>
-              </div>
-
-              <div className="bg-green-50 rounded-xl p-4 text-center">
-                <p className="text-sm text-gray-600 mb-1">This Month</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {selectedMember.performance.thisMonth}
-                </p>
-              </div>
-
-              <div className="bg-purple-50 rounded-xl p-4 text-center">
-                <p className="text-sm text-gray-600 mb-1">Avg Time</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {selectedMember.performance.avgTime}
-                </p>
-              </div>
-
-              <div className="bg-orange-50 rounded-xl p-4 text-center">
-                <p className="text-sm text-gray-600 mb-1">Quality</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  {selectedMember.performance.quality}%
-                </p>
-              </div>
-            </div>
-
-            {/* ACTION BUTTONS */}
-            <div className="flex gap-4">
-              <button className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
-                <Edit className="w-5 h-5" />
-                Edit Profile
-              </button>
-
-              <button className="px-6 py-3 border-2 border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                View Full History
-              </button>
             </div>
           </div>
         </div>

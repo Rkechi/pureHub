@@ -1,35 +1,22 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { User, Mail, Lock, Sparkles, ArrowRight } from 'lucide-react';
 import ButtonLoader from '@/components/loaders/ButtonLoader';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function RegisterPage() {
     const [form, setForm] = useState({ name: "", email: "", password: "" });
-    const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
+    const [error, setError] = useState("");
+    const { register, isLoading } = useAuth();
 
     async function handleSubmit(e: any) {
         e.preventDefault();
-        setIsLoading(true);
+        setError("");
 
         try {
-            const res = await fetch("/api/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(form),
-            });
+            await register(form.name, form.email, form.password);
 
-            const data = await res.json();
-
-            if (!res.ok) {
-                alert(data.message || "Registration failed");
-                return;
-            }
-
-            // Registration successful - send welcome email
+            // Send welcome email after successful registration
             try {
                 await fetch("/api/send-mail", {
                     method: "POST",
@@ -43,9 +30,8 @@ export default function RegisterPage() {
                             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                                 <h2 style="color: #0ea5e9;">Welcome to PureHive, ${form.name}!</h2>
                                 <p>Your account has been successfully created.</p>
-                                <p>You can now log in and start managing your cleaning operations with our smart IoT-powered dashboard.</p>
-                                <p style="margin-top: 20px;">If you have any questions, feel free to reach out to our support team.</p>
-                                <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">Best regards,<br/>The PureHive Team</p>
+                                <p>Start managing your cleaning operations with our IoT-powered platform.</p>
+                                <p style="margin-top: 30px;">Best regards,<br>The PureHive Team</p>
                             </div>
                         `,
                     }),
@@ -55,100 +41,90 @@ export default function RegisterPage() {
                 // Don't block registration if email fails
             }
 
-            router.push("/login");
-
-        } catch (error) {
-            console.error("Registration failed:", error);
-            alert("Something went wrong. Please try again.");
-        } finally {
-            setIsLoading(false);
+            // Redirect handled by AuthContext
+        } catch (err: any) {
+            setError(err.message || "Registration failed. Please try again.");
         }
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 p-4 relative overflow-hidden">
-            {/* Animated background elements */}
-            <div className="absolute inset-0">
-                <div className="absolute top-20 left-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-                <div className="absolute top-40 right-20 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-                <div className="absolute bottom-20 left-40 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-            </div>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 p-4">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6bTAtNHYyaDJ2LTJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40"></div>
 
-            <div className="relative">
-                <div className="bg-white/95 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md space-y-6 border border-white/50">
-                    <div className="text-center space-y-3">
-                        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl mb-2 shadow-lg">
-                            <Sparkles className="w-10 h-10 text-white" />
-                        </div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-                            Create Account
-                        </h1>
-                        <p className="text-gray-600 text-sm">Join us today and get started</p>
+            <form onSubmit={handleSubmit} className="relative bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md space-y-6 border border-white/20">
+                <div className="text-center space-y-2">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl mb-2">
+                        <Sparkles className="w-8 h-8 text-white" />
+                    </div>
+                    <h1 className="text-3xl font-bold text-white">Create Account</h1>
+                    <p className="text-pink-100 text-sm">Join PureHive and start managing smarter</p>
+                </div>
+
+                {error && (
+                    <div className="bg-red-500/20 border border-red-500/50 text-red-100 px-4 py-3 rounded-xl text-sm">
+                        {error}
+                    </div>
+                )}
+
+                <div className="space-y-4">
+                    <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pink-200" />
+                        <input
+                            type="text"
+                            required
+                            className="w-full bg-white/10 border border-white/20 text-white placeholder:text-pink-200 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                            placeholder="Enter your name"
+                            value={form.name}
+                            onChange={e => setForm({ ...form, name: e.target.value })}
+                        />
                     </div>
 
-                    <div className="space-y-4">
-                        <div className="relative group">
-                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                            <input
-                                type="text"
-                                required
-                                className="w-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder:text-gray-400 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                                placeholder="Full Name"
-                                value={form.name}
-                                onChange={e => setForm({ ...form, name: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="relative group">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                            <input
-                                type="email"
-                                required
-                                className="w-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder:text-gray-400 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                                placeholder="Email Address"
-                                value={form.email}
-                                onChange={e => setForm({ ...form, email: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="relative group">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                            <input
-                                type="password"
-                                required
-                                minLength={6}
-                                className="w-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder:text-gray-400 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                                placeholder="Password (min. 6 characters)"
-                                value={form.password}
-                                onChange={e => setForm({ ...form, password: e.target.value })}
-                            />
-                        </div>
+                    <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pink-200" />
+                        <input
+                            type="email"
+                            required
+                            className="w-full bg-white/10 border border-white/20 text-white placeholder:text-pink-200 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                            placeholder="Enter your email"
+                            value={form.email}
+                            onChange={e => setForm({ ...form, email: e.target.value })}
+                        />
                     </div>
 
-                    <button
-                        onClick={handleSubmit}
-                        disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3.5 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl shadow-blue-500/50 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {isLoading && <ButtonLoader size="md" color="white" />}
-                        {isLoading ? 'Creating account...' : (
-                            <>
-                                <span>Register</span>
-                                <ArrowRight className="w-5 h-5" />
-                            </>
-                        )}
-                    </button>
-
-                    <div className="text-center pt-2">
-                        <p className="text-gray-600 text-sm">
-                            Already have an account?{' '}
-                            <a href="/login" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
-                                Sign in
-                            </a>
-                        </p>
+                    <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pink-200" />
+                        <input
+                            type="password"
+                            required
+                            minLength={6}
+                            className="w-full bg-white/10 border border-white/20 text-white placeholder:text-pink-200 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                            placeholder="Create a password (min. 6 characters)"
+                            value={form.password}
+                            onChange={e => setForm({ ...form, password: e.target.value })}
+                        />
                     </div>
                 </div>
-            </div>
+
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3.5 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-cyan-500/50 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {isLoading && <ButtonLoader size="md" color="white" />}
+                    {isLoading ? 'Creating account...' : (
+                        <>
+                            Create Account
+                            <ArrowRight className="w-5 h-5" />
+                        </>
+                    )}
+                </button>
+
+                <div className="text-center">
+                    <a href="/login" className="text-pink-100 hover:text-white text-sm transition-colors">
+                        Already have an account? Login
+                    </a>
+                </div>
+            </form>
         </div>
     );
 }

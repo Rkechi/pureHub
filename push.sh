@@ -1,3 +1,3 @@
 git add .
-git commit -m "Backend 100% Updated"
+git commit -m "Client ready Update"
 git push

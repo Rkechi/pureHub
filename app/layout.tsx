@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { AuthProvider } from "@/app/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "PureHive - Smart Cleaning Management",
-  description: "Revolutionizing Building Maintenance with IoT Technology",
+  title: "PureHive - Smart ESG-Compliant Cleaning Dashboard",
+  description: "IoT-powered cleaning management system",
 };
 
 export default function RootLayout({
@@ -20,8 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} antialiased`}>
-        <ClientLayout>{children}</ClientLayout>
+      <body>
+        <AuthProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </AuthProvider>
       </body>
     </html>
   );

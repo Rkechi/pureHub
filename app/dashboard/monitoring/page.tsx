@@ -1,248 +1,145 @@
 "use client";
+import { Activity, Droplets, Beaker, Thermometer, Wind, Battery, Loader2, RefreshCw } from "lucide-react";
+import { useMonitoring } from "@/hooks/useMonitoring";
 
-import { useState, useEffect } from "react";
-import {
-  Activity,
-  Wind,
-  Droplets,
-  Thermometer,
-  AlertTriangle,
-  CheckCircle,
-  MapPin,
-  Users,
-  Wifi,
-  WifiOff,
-  TrendingUp,
-  TrendingDown,
-  Zap,
-  Clock,
-} from "lucide-react";
+export default function MonitoringPage() {
+  const { latestData, stats, loading, error, refresh } = useMonitoring(30000); // Poll every 30s
 
-// 🔥 FIX: Sensor Type Definition (allows null values safely)
-type Sensor = {
-  id: number;
-  area: string;
-  status: "active" | "warning" | "cleaning" | "offline";
-  vocLevel: number | null;
-  humidity: number | null;
-  temperature: number | null;
-  waterUsage: number | null;
-  lastCleaned: string;
-  cleaner: string | null;
-  alerts: string[];
-};
-
-export default function LiveMonitoringPage() {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [selectedArea, setSelectedArea] = useState<Sensor | null>(null);
-
-  const [sensors, setSensors] = useState<Sensor[]>([
-    {
-      id: 1,
-      area: "Lobby",
-      status: "active",
-      vocLevel: 0.42,
-      humidity: 48,
-      temperature: 22,
-      waterUsage: 2.3,
-      lastCleaned: "2 hours ago",
-      cleaner: "Sarah Johnson",
-      alerts: [],
-    },
-    {
-      id: 2,
-      area: "Conference Room A",
-      status: "warning",
-      vocLevel: 0.76,
-      humidity: 54,
-      temperature: 25,
-      waterUsage: 1.8,
-      lastCleaned: "3 hours ago",
-      cleaner: "Victor Ade",
-      alerts: ["High VOC Levels"],
-    },
-    {
-      id: 3,
-      area: "Hallway 1F",
-      status: "cleaning",
-      vocLevel: 0.30,
-      humidity: 47,
-      temperature: 23,
-      waterUsage: 3.2,
-      lastCleaned: "15 minutes ago",
-      cleaner: "Janet O.",
-      alerts: ["Cleaning in progress"],
-    },
-    {
-      id: 4,
-      area: "Restroom – West",
-      status: "active",
-      vocLevel: 0.52,
-      humidity: 60,
-      temperature: 24,
-      waterUsage: 4.1,
-      lastCleaned: "1 hour ago",
-      cleaner: "Ola James",
-      alerts: [],
-    },
-    {
-      id: 5,
-      area: "Storage Room",
-      status: "warning",
-      vocLevel: 0.91,
-      humidity: 65,
-      temperature: 27,
-      waterUsage: 2.9,
-      lastCleaned: "5 hours ago",
-      cleaner: "Unknown",
-      alerts: ["Poor ventilation", "High temperature"],
-    },
-    {
-      id: 6,
-      area: "Cafeteria",
-      status: "offline",
-      vocLevel: null,
-      humidity: null,
-      temperature: null,
-      waterUsage: null,
-      lastCleaned: "2 hours ago",
-      cleaner: null,
-      alerts: ["Sensor offline"],
-    },
-  ]);
-
-  // Real-time updates (unchanged)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-
-      setSensors((prev) =>
-        prev.map((sensor) => {
-          if (sensor.status === "offline") return sensor;
-
-          return {
-            ...sensor,
-            vocLevel: parseFloat(
-              (sensor.vocLevel! + (Math.random() - 0.5) * 0.05).toFixed(2)
-            ),
-            humidity: Math.max(
-              30,
-              Math.min(70, sensor.humidity! + Math.floor(Math.random() * 3 - 1))
-            ),
-            temperature: Math.max(
-              18,
-              Math.min(
-                30,
-                sensor.temperature! + Math.floor(Math.random() * 3 - 1)
-              )
-            ),
-          };
-        })
-      );
-    }, 4000);
-
-    return () => clearInterval(timer);
-  }, []);
+  if (loading && !latestData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6 flex items-center justify-center">
+        <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center border-b pb-3">
-        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-          <Activity className="w-6 h-6 text-blue-600" />
-          Live Monitoring
-        </h1>
-        <span className="flex items-center gap-2 text-gray-600">
-          <Clock className="w-4 h-4" />
-          {currentTime.toLocaleTimeString()}
-        </span>
-      </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {sensors.map((sensor) => (
-          <div
-            key={sensor.id}
-            onClick={() => setSelectedArea(sensor)}
-            className={`cursor-pointer p-5 rounded-xl border shadow-sm transition-all hover:shadow-md ${
-              sensor.status === "warning"
-                ? "border-yellow-400 bg-yellow-50"
-                : sensor.status === "cleaning"
-                ? "border-blue-400 bg-blue-50"
-                : sensor.status === "offline"
-                ? "border-gray-400 bg-gray-100"
-                : "border-green-400 bg-green-50"
-            }`}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Real-Time Monitoring</h1>
+            <p className="text-gray-600 mt-1">IoT sensors tracking environmental data</p>
+          </div>
+          <button
+            onClick={refresh}
+            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all flex items-center gap-2"
           >
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-lg text-gray-700">{sensor.area}</h2>
-              {sensor.status === "offline" ? (
-                <WifiOff className="text-gray-600" />
-              ) : (
-                <Wifi className="text-green-600" />
-              )}
-            </div>
-
-            <p className="text-sm text-gray-900 mt-1 flex items-center gap-1">
-              <Users className="w-4 h-4" />
-              Cleaner: {sensor.cleaner ?? "No data"}
-            </p>
-
-            <div className="mt-4 space-y-2">
-              <p className="text-sm flex items-center gap-2 text-gray-700">
-                <Activity className="w-4 h-4 text-red-600" />
-                VOC: {sensor.vocLevel ?? "N/A"}
-              </p>
-
-              <p className="text-sm flex items-center gap-2 text-gray-700">
-                <Droplets className="w-4 h-4 text-blue-600" />
-                Humidity: {sensor.humidity ?? "N/A"}%
-              </p>
-
-              <p className="text-sm flex items-center gap-2 text-gray-700">
-                <Thermometer className="w-4 h-4 text-orange-500" />
-                Temp: {sensor.temperature ?? "N/A"}°C
-              </p>
-            </div>
-
-            {sensor.alerts.length > 0 && (
-              <div className="mt-3 text-xs text-red-600 font-semibold">
-                ⚠ {sensor.alerts.join(", ")}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Selected Area Drawer */}
-      {selectedArea && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white shadow-xl p-6 border-t">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">{selectedArea.area}</h2>
-            <button
-              onClick={() => setSelectedArea(null)}
-              className="text-gray-500 hover:text-black"
-            >
-              Close
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <p>Status: {selectedArea.status}</p>
-            <p>VOC: {selectedArea.vocLevel ?? "N/A"}</p>
-            <p>Humidity: {selectedArea.humidity ?? "N/A"}%</p>
-            <p>Temperature: {selectedArea.temperature ?? "N/A"}°C</p>
-            <p>Water Usage: {selectedArea.waterUsage ?? "N/A"}L</p>
-            <p>Cleaner: {selectedArea.cleaner ?? "N/A"}</p>
-          </div>
-
-          {selectedArea.alerts.length > 0 && (
-            <div className="mt-4 text-red-600">
-              <strong>Alerts:</strong> {selectedArea.alerts.join(", ")}
-            </div>
-          )}
+            <RefreshCw className="w-5 h-5" />
+            Refresh
+          </button>
         </div>
-      )}
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
+            {error}
+          </div>
+        )}
+
+        {latestData && (
+          <>
+            <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl p-6 text-white">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold">Latest Reading</h2>
+                <div className="text-sm opacity-90">
+                  {new Date(latestData.timestamp).toLocaleString()}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Wind className="w-5 h-5" />
+                    <span className="text-sm  opacity-90">VOC Level</span>
+                  </div>
+                  <p className="text-3xl font-bold">{latestData.vocLevel.toFixed(1)} ppb</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Droplets className="w-5 h-5" />
+                    <span className="text-sm opacity-90">Water Usage</span>
+                  </div>
+                  <p className="text-3xl font-bold">{latestData.waterUsage.toFixed(1)} L</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Beaker className="w-5 h-5" />
+                    <span className="text-sm opacity-90">Chemical</span>
+                  </div>
+                  <p className="text-3xl font-bold">{latestData.chemicalUsage.toFixed(1)} ml</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Thermometer className="w-5 h-5" />
+                    <span className="text-sm opacity-90">Temperature</span>
+                  </div>
+                  <p className="text-3xl font-bold">{latestData.temperature.toFixed(1)}°C</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white rounded-xl p-4 shadow">
+                <p className="text-gray-600 text-sm mb-1">Humidity</p>
+                <p className="text-2xl font-bold text-blue-600">{latestData.humidity.toFixed(1)}%</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <p className="text-gray-600 text-sm mb-1">Air Quality</p>
+                <p className="text-2xl font-bold text-green-600">{latestData.airQuality.toFixed(0)} AQI</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <p className="text-gray-600 text-sm mb-1">Battery</p>
+                <div className="flex items-center gap-2">
+                  <Battery className="w-5 h-5 text-gray-600" />
+                  <p className="text-2xl font-bold">{latestData.battery.toFixed(0)}%</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow">
+                <p className="text-gray-600 text-sm mb-1">Signal</p>
+                <p className="text-2xl font-bold">{latestData.signal.toFixed(0)}%</p>
+              </div>
+            </div>
+          </>
+        )}
+
+        {stats && (
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Historical Averages</h2>
+            <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div>
+                <p className="text-gray-600 text-sm">Avg VOC</p>
+                <p className="text-xl font-bold text-blue-600">{stats.avgVocLevel.toFixed(1)} ppb</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">Avg Water</p>
+                <p className="text-xl font-bold text-cyan-600">{stats.avgWaterUsage.toFixed(1)} L</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">Avg Chemical</p>
+                <p className="text-xl font-bold text-purple-600">{stats.avgChemicalUsage.toFixed(1)} ml</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">Avg Temp</p>
+                <p className="text-xl font-bold text-orange-600">{stats.avgTemperature.toFixed(1)}°C</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">Avg Humidity</p>
+                <p className="text-xl font-bold text-green-600">{stats.avgHumidity.toFixed(1)}%</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">Total Readings</p>
+                <p className="text-xl font-bold text-gray-900">{stats.totalReadings}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!latestData && !loading && (
+          <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+            <Activity className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-600">No sensor data available</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
