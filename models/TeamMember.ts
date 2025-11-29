@@ -53,7 +53,7 @@ const TeamMemberSchema: Schema = new Schema(
             default: function () {
                 // Generate initials from name
                 const names = this.name.split(' ');
-                return names.map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                return names.map((n: string) => n[0]).join('').toUpperCase().substring(0, 2);
             }
         },
         rating: {
@@ -118,7 +118,6 @@ const TeamMemberSchema: Schema = new Schema(
 );
 
 // Index for faster queries
-TeamMemberSchema.index({ email: 1 });
 TeamMemberSchema.index({ status: 1 });
 TeamMemberSchema.index({ userId: 1 });
 

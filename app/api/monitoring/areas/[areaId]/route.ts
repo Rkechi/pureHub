@@ -8,10 +8,11 @@ import { fetchSensorData, parseSensorReading } from '@/lib/thingspeak';
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { areaId: string } }
+    { params }: { params: Promise<{ areaId: string }> }
 ) {
     try {
-        const { areaId } = params;
+        // In Next.js 16+, params is now a Promise and must be awaited
+        const { areaId } = await params;
         const { searchParams } = new URL(request.url);
         const results = parseInt(searchParams.get('results') || '50');
 

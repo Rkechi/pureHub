@@ -127,7 +127,9 @@ export default function LogsPage() {
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="font-bold text-gray-900 text-lg">{log.area}</h3>
                         {log.blockchainHash && (
-                          <Shield className="w-5 h-5 text-green-600" title="Blockchain verified" />
+                          <div title="Blockchain verified">
+                            <Shield className="w-5 h-5 text-green-600" />
+                          </div>
                         )}
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm text-gray-600">

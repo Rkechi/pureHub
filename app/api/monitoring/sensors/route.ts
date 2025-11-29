@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const results = parseInt(searchParams.get('results') || '100');
-        const days = searchParams.get('days') ? parseInt(searchParams.get('days')) : undefined;
+        const daysParam = searchParams.get('days');
+        const days = daysParam ? parseInt(daysParam) : undefined;
         const latest = searchParams.get('latest') === 'true';
 
         if (latest) {

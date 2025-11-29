@@ -158,7 +158,6 @@ const SettingsSchema: Schema = new Schema(
     }
 );
 
-// Index for faster userId queries
-SettingsSchema.index({ userId: 1 });
+
 
 export default mongoose.models.Settings || mongoose.model<ISettings>('Settings', SettingsSchema);
