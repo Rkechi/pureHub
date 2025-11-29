@@ -76,11 +76,11 @@ export default function LogsPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-xl p-4 shadow">
-            <p className="text-gray-600 text-sm">Total Logs</p>
-            <p className="text-2xl font-bold">{logs.length}</p>
+            <p className="text-gray-800 text-sm">Total Logs</p>
+            <p className="text-2xl text-gray-600 font-bold">{logs.length}</p>
           </div>
           <div className="bg-white rounded-xl p-4 shadow">
-            <p className="text-gray-600 text-sm">Blockchain Verified</p>
+            <p className="text-gray-800 text-sm">Blockchain Verified</p>
             <p className="text-2xl font-bold text-green-600">
               {logs.filter(l => l.blockchainHash).length}
             </p>

@@ -1,3 +1,3 @@
 git add .
-git commit -m "Small touches"
+git commit -m "ESG bug cleared"
 git push
