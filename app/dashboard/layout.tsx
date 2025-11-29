@@ -1,4 +1,5 @@
 "use client";
+import { Analytics } from "@vercel/analytics/next"
 
 import { ReactNode, useState, useEffect } from "react";
 import Navbar from '@/components/Navbar';
@@ -34,6 +35,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 w-full overflow-x-hidden">
+      <Analytics />
       <ScreenSizeWarning />
       <Navbar onToggleSidebar={toggleMobileSidebar} />
       <div className="flex w-full">

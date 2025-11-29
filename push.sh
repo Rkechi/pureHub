@@ -1,3 +1,3 @@
 git add .
-git commit -m "npm run build errors cleared 2"
+git commit -m "vercel analytics integration"
 git push
