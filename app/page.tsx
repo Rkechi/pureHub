@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PreLoader from "@/components/loaders/PreLoader";
 import {
   Shield,
   Activity,
@@ -16,7 +17,22 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  const [showPreloader, setShowPreloader] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Hide preloader after it completes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPreloader(false);
+    }, 2500); // Match PreLoader's completion time
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show preloader on first visit
+  if (showPreloader) {
+    return <PreLoader />;
+  }
 
   const features = [
     {

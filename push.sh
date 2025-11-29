@@ -1,3 +1,3 @@
 git add .
-git commit -m "Mock data calls cleared"
+git commit -m "Log-out button fixed"
 git push

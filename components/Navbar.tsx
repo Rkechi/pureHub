@@ -1,16 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Bell, User, Search, Menu, Shield, LogOut, Settings } from "lucide-react";
+import { Bell, User, Search, Menu, Shield, LogOut, Settings, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 
 interface NavbarProps {
     onToggleSidebar: () => void;
 }
 
 export default function Navbar({ onToggleSidebar }: NavbarProps) {
+    const { logout, user } = useAuth();
     const [showProfile, setShowProfile] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const notifications = [
         {
@@ -37,6 +40,13 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
     ];
 
     const unreadCount = notifications.filter(n => n.unread).length;
+
+    const handleLogout = async () => {
+        setIsLoggingOut(true);
+        // Add a slight delay to show the loader
+        await new Promise(resolve => setTimeout(resolve, 500));
+        logout();
+    };
 
     return (
         <nav className="bg-white border-b border-gray-200 sticky top-0 z-40 w-full max-w-full">
@@ -141,7 +151,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                                     <User className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                 </div>
                                 <span className="hidden sm:block text-sm font-semibold text-gray-700">
-                                    Admin User
+                                    {user?.name || "Admin User"}
                                 </span>
                             </button>
 
@@ -154,8 +164,8 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                                                 <User className="w-8 h-8 text-white" />
                                             </div>
                                             <div>
-                                                <p className="text-white font-semibold">Admin User</p>
-                                                <p className="text-white/80 text-sm">admin@purehive.com</p>
+                                                <p className="text-white font-semibold">{user?.name || "Admin User"}</p>
+                                                <p className="text-white/80 text-sm">{user?.email || "admin@purehive.com"}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -165,11 +175,21 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                                             <span className="text-gray-700 font-medium">Settings</span>
                                         </a>
                                         <button
-                                            onClick={() => {/* I'll Add Layout Logic Later */ }}
-                                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 rounded-lg transition-colors text-left"
+                                            onClick={handleLogout}
+                                            disabled={isLoggingOut}
+                                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 rounded-lg transition-colors text-left disabled:opacity-60 disabled:cursor-not-allowed"
                                         >
-                                            <LogOut className="w-5 h-5 text-red-600" />
-                                            <span className="text-red-600 font-medium">Logout</span>
+                                            {isLoggingOut ? (
+                                                <>
+                                                    <Loader2 className="w-5 h-5 text-red-600 animate-spin" />
+                                                    <span className="text-red-600 font-medium">Logging out...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <LogOut className="w-5 h-5 text-red-600" />
+                                                    <span className="text-red-600 font-medium">Logout</span>
+                                                </>
+                                            )}
                                         </button>
                                     </div>
                                 </div>
