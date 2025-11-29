@@ -90,12 +90,12 @@ export default function MonitoringPage() {
                 <p className="text-gray-600 text-sm mb-1">Battery</p>
                 <div className="flex items-center gap-2">
                   <Battery className="w-5 h-5 text-gray-600" />
-                  <p className="text-2xl font-bold">{latestData.battery.toFixed(0)}%</p>
+                  <p className="text-2xl font-bold text-cyan-600">{latestData.battery.toFixed(0)}%</p>
                 </div>
               </div>
               <div className="bg-white rounded-xl p-4 shadow">
                 <p className="text-gray-600 text-sm mb-1">Signal</p>
-                <p className="text-2xl font-bold">{latestData.signal.toFixed(0)}%</p>
+                <p className="text-2xl font-bold text-gray-700">{latestData.signal.toFixed(0)}%</p>
               </div>
             </div>
           </>

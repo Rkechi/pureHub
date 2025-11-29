@@ -86,7 +86,7 @@ export default function SchedulePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Total Tasks</p>
-            <p className="text-2xl font-bold">{stats.total}</p>
+            <p className="text-2xl font-bold text-cyan-600">{stats.total}</p>
           </div>
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Pending</p>

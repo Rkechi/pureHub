@@ -132,7 +132,7 @@ export default function TeamPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Total Members</p>
-            <p className="text-2xl font-bold">{stats.totalMembers}</p>
+            <p className="text-2xl font-bold text-cyan-600">{stats.totalMembers}</p>
           </div>
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Active Today</p>
@@ -158,7 +158,7 @@ export default function TeamPage() {
         </div>
 
         {/* SEARCH & FILTERS */}
-        <div className="bg-white rounded-xl shadow p-4">
+        <div className="bg-white rounded-xl shadow p-4 text-gray-600">
           <div className="flex gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -167,7 +167,7 @@ export default function TeamPage() {
                 placeholder="Search by name, role, or specialization..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent focus:outline-none text-gray-400 placeholder-gray-300"
               />
             </div>
             <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-2">

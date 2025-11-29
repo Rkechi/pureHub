@@ -1,3 +1,3 @@
 git add .
-git commit -m "vercel analytics integration"
+git commit -m "slight update to UI"
 git push
