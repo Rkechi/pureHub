@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -11,90 +10,28 @@ import {
   CheckCircle,
   Clock,
   Users,
+  Loader2,
 } from "lucide-react";
+import { useDashboard } from "@/hooks/useDashboard";
 
 export default function DashboardHome() {
-  const [realtimeData, setRealtimeData] = useState({
-    vocLevel: 0.42,
-    humidity: 48,
-    waterUsed: 2.3,
-    lastCleaned: "10 mins ago",
-  });
+  const { metrics, recentActivities, environmentalImpact, loading, error } = useDashboard(5000);
 
-  // Simulate real-time data updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRealtimeData((prev) => ({
-        ...prev,
-        vocLevel: parseFloat((Math.random() * 0.8).toFixed(2)),
-        humidity: 45 + Math.random() * 10,
-      }));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6 flex items-center justify-center">
+        <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
 
-  const metrics = [
-    {
-      title: "VOC Level",
-      value: realtimeData.vocLevel,
-      unit: "ppm",
-      icon: Wind,
-      trend: -12,
-      status: realtimeData.vocLevel < 0.5 ? "good" : "warning",
-      gradient: "from-blue-500 to-cyan-500",
-    },
-    {
-      title: "Water Usage",
-      value: realtimeData.waterUsed,
-      unit: "L/day",
-      icon: Droplets,
-      trend: -8,
-      status: "good",
-      gradient: "from-green-500 to-emerald-500",
-    },
-    {
-      title: "Humidity",
-      value: Math.round(realtimeData.humidity),
-      unit: "%",
-      icon: Activity,
-      trend: 5,
-      status: "good",
-      gradient: "from-purple-500 to-pink-500",
-    },
-    {
-      title: "Areas Cleaned",
-      value: 12,
-      unit: "today",
-      icon: CheckCircle,
-      trend: 15,
-      status: "good",
-      gradient: "from-orange-500 to-red-500",
-    },
-  ];
-
-  const recentActivities = [
-    { area: "Lobby", time: "10 mins ago", status: "completed", cleaner: "John D." },
-    { area: "Restroom A", time: "25 mins ago", status: "completed", cleaner: "Sarah M." },
-    { area: "Kitchen", time: "1 hour ago", status: "completed", cleaner: "Emily L." },
-  ];
-
-  const alerts = [
-    {
-      type: "warning",
-      message: "High VOC levels detected in Restroom B",
-      time: "5 mins ago",
-    },
-    {
-      type: "info",
-      message: "Routine cleaning scheduled for Kitchen area",
-      time: "30 mins ago",
-    },
-    {
-      type: "warning",
-      message: "Low water pressure detected in supply tank",
-      time: "1 hour ago",
-    },
-  ];
+  // Icon mapping
+  const iconMap: Record<string, any> = {
+    Wind,
+    Droplets,
+    Activity,
+    CheckCircle,
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-3 sm:p-4 lg:p-6">
@@ -111,10 +48,16 @@ export default function DashboardHome() {
           </div>
         </div>
 
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
+            {error}
+          </div>
+        )}
+
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {metrics.map((metric, i) => {
-            const Icon = metric.icon;
+            const Icon = iconMap[metric.icon];
             return (
               <motion.div
                 key={i}
@@ -145,7 +88,7 @@ export default function DashboardHome() {
                   <p className="text-gray-600 text-sm">{metric.title}</p>
                   <div className="flex items-baseline gap-2">
                     <motion.span
-                      key={metric.value}
+                      key={metric.value.toString()}
                       initial={{ opacity: 0.4, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
@@ -178,65 +121,75 @@ export default function DashboardHome() {
               </a>
             </div>
             <div className="space-y-4">
-              {recentActivities.map((activity, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">{activity.area}</p>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Users className="w-3 h-3" />
-                        {activity.cleaner}
+              {recentActivities.length === 0 ? (
+                <div className="text-center py-12">
+                  <CheckCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-600">No recent activities</p>
+                </div>
+              ) : (
+                recentActivities.map((activity, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">{activity.area}</p>
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Users className="w-3 h-3" />
+                          {activity.cleaner}
+                        </div>
                       </div>
                     </div>
+                    <div className="text-right">
+                      <span className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm font-semibold">
+                        {activity.status}
+                      </span>
+                      <p className="text-xs text-gray-500 mt-1 flex items-center gap-1 justify-end">
+                        <Clock className="w-3 h-3" />
+                        {activity.time}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm font-semibold">
-                      {activity.status}
-                    </span>
-                    <p className="text-xs text-gray-500 mt-1 flex items-center gap-1 justify-end">
-                      <Clock className="w-3 h-3" />
-                      {activity.time}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
           {/* Alerts & Quick Actions */}
           <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Alerts</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">System Status</h2>
             <div className="space-y-4">
-              {alerts.map((alert, i) => (
-                <div
-                  key={i}
-                  className={`p-4 rounded-xl border-l-4 ${alert.type === "warning"
-                    ? "bg-yellow-50 border-yellow-500"
-                    : "bg-blue-50 border-blue-500"
-                    }`}
-                >
+              <div className="p-4 rounded-xl border-l-4 bg-green-50 border-green-500">
+                <div className="flex gap-3">
+                  <CheckCircle className="w-5 h-5 flex-shrink-0 text-green-600" />
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-900 font-medium">
+                      All systems operational
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">Last updated: Just now</p>
+                  </div>
+                </div>
+              </div>
+
+              {environmentalImpact.waterSaved > 0 && (
+                <div className="p-4 rounded-xl border-l-4 bg-blue-50 border-blue-500">
                   <div className="flex gap-3">
-                    <AlertTriangle
-                      className={`w-5 h-5 flex-shrink-0 ${alert.type === "warning"
-                        ? "text-yellow-600"
-                        : "text-blue-600"
-                        }`}
-                    />
+                    <AlertTriangle className="w-5 h-5 flex-shrink-0 text-blue-600" />
                     <div className="flex-1">
                       <p className="text-sm text-gray-900 font-medium">
-                        {alert.message}
+                        Water conservation active
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">{alert.time}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {environmentalImpact.waterSaved.toFixed(1)}L saved today
+                      </p>
                     </div>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
 
             {/* Quick Actions */}
@@ -274,17 +227,17 @@ export default function DashboardHome() {
           <div className="grid grid-cols-3 gap-6 mt-8">
             <div>
               <p className="text-green-100 text-sm mb-1">Water Saved</p>
-              <p className="text-3xl font-bold">18.5L</p>
+              <p className="text-3xl font-bold">{environmentalImpact.waterSaved.toFixed(1)}L</p>
             </div>
             <div>
               <p className="text-green-100 text-sm mb-1">
                 CO<sub>2</sub> Reduced
               </p>
-              <p className="text-2xl font-bold">4.2kg</p>
+              <p className="text-2xl font-bold">{environmentalImpact.co2Reduced.toFixed(1)}kg</p>
             </div>
             <div>
               <p className="text-green-100 text-sm mb-1">Efficiency</p>
-              <p className="text-3xl font-bold">94%</p>
+              <p className="text-3xl font-bold">{Math.round(environmentalImpact.efficiency)}%</p>
             </div>
           </div>
         </div>

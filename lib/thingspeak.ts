@@ -246,3 +246,20 @@ export function parseSensorReading(reading: SensorReading) {
         signal: reading.field8 || 0,
     };
 }
+
+/**
+ * Get sensor data in parsed format
+ * @param results - Number of results to fetch
+ */
+export async function getSensorData(results: number = 100) {
+    const rawData = await fetchSensorData(results);
+    return rawData.map(parseSensorReading);
+}
+
+/**
+ * Get latest sensor data in parsed format
+ */
+export async function getLatestSensorData() {
+    const rawData = await getLatestReading();
+    return rawData ? parseSensorReading(rawData) : null;
+}
