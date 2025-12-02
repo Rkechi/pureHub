@@ -1,3 +1,3 @@
 git add .
-git commit -m "slight update overall"
+git commit -m "vercel dey crase"
 git push
