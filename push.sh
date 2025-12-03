@@ -1,3 +1,3 @@
 git add .
-git commit -m "vercel dey crase"
+git commit -m "vercel dey crazy"
 git push
