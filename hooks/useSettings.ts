@@ -22,6 +22,29 @@ interface Settings {
         autoAssign: boolean;
         reminderMinutes: number;
     };
+    iot: {
+        thingspeak: {
+            enabled: boolean;
+            channelId: string;
+            readApiKey: string;
+            writeApiKey: string;
+            description: string;
+        };
+        awsIot: {
+            enabled: boolean;
+            endpoint: string;
+            region: string;
+            description: string;
+        };
+        devices: Array<{
+            id: string;
+            name: string;
+            type: 'VOC' | 'Water' | 'Temperature' | 'Humidity' | 'Multi';
+            location: string;
+            status: 'active' | 'inactive' | 'error';
+            lastReading?: Date;
+        }>;
+    };
 }
 
 export function useSettings() {

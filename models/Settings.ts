@@ -42,6 +42,31 @@ export interface ISettings extends Document {
         dataSharing: boolean;
     };
 
+    // IoT Device Integration
+    iot: {
+        thingspeak: {
+            enabled: boolean;
+            channelId: string;
+            readApiKey: string;
+            writeApiKey: string;
+            description: string;
+        };
+        awsIot: {
+            enabled: boolean;
+            endpoint: string;
+            region: string;
+            description: string;
+        };
+        devices: Array<{
+            id: string;
+            name: string;
+            type: 'VOC' | 'Water' | 'Temperature' | 'Humidity' | 'Multi';
+            location: string;
+            status: 'active' | 'inactive' | 'error';
+            lastReading?: Date;
+        }>;
+    };
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -150,6 +175,79 @@ const SettingsSchema: Schema = new Schema(
             dataSharing: {
                 type: Boolean,
                 default: false,
+            },
+        },
+
+        iot: {
+            thingspeak: {
+                enabled: {
+                    type: Boolean,
+                    default: false,
+                },
+                channelId: {
+                    type: String,
+                    default: '',
+                },
+                readApiKey: {
+                    type: String,
+                    default: '',
+                },
+                writeApiKey: {
+                    type: String,
+                    default: '',
+                },
+                description: {
+                    type: String,
+                    default: '',
+                },
+            },
+            awsIot: {
+                enabled: {
+                    type: Boolean,
+                    default: false,
+                },
+                endpoint: {
+                    type: String,
+                    default: '',
+                },
+                region: {
+                    type: String,
+                    default: 'us-east-1',
+                },
+                description: {
+                    type: String,
+                    default: '',
+                },
+            },
+            devices: {
+                type: [{
+                    id: {
+                        type: String,
+                        required: true,
+                    },
+                    name: {
+                        type: String,
+                        required: true,
+                    },
+                    type: {
+                        type: String,
+                        enum: ['VOC', 'Water', 'Temperature', 'Humidity', 'Multi'],
+                        required: true,
+                    },
+                    location: {
+                        type: String,
+                        required: true,
+                    },
+                    status: {
+                        type: String,
+                        enum: ['active', 'inactive', 'error'],
+                        default: 'inactive',
+                    },
+                    lastReading: {
+                        type: Date,
+                    },
+                }],
+                default: [],
             },
         },
     },

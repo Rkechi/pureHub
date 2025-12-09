@@ -135,7 +135,7 @@ export async function PATCH(request: NextRequest) {
         }
 
         // Validate section exists
-        const validSections = ['notifications', 'dashboard', 'tasks', 'reports', 'privacy'];
+        const validSections = ['notifications', 'dashboard', 'tasks', 'reports', 'privacy', 'iot'];
         if (!validSections.includes(section)) {
             return NextResponse.json(
                 {

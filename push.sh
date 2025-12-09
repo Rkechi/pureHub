@@ -1,3 +1,3 @@
 git add .
-git commit -m "vercel dey Stupid"
+git commit -m "IoT integration done"
 git push
