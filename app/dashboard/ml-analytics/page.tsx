@@ -14,20 +14,63 @@ export default function MLAnalyticsPage() {
 
     const loadAnalytics = async () => {
         try {
-            // Use existing Thingspeak sensor data
-            const sensorResponse = await fetch('/api/thingspeak');
+            // Fetch real sensor data
+            const sensorResponse = await fetch('/api/sensors');
             const sensorData = await sensorResponse.json();
 
-            // For now, show message that ML features use real data when available
-            setAnomalies([]);
-            setPredictions([]);
-            setHealthScores({
-                'Main Lobby': 92,
-                'Conference Room A': 88,
-                'Office Floor 2': 95,
-                'Storage Room': 84,
-                'Restrooms': 91,
+            if (!sensorData.success || !sensorData.readings) {
+                setLoading(false);
+                return;
+            }
+
+            const areas = ['Main Lobby', 'Conference Room A', 'Office Floor 2', 'Storage Room', 'Restrooms'];
+
+            // Fetch real anomalies for each area
+            const anomalyPromises = areas.map(async (area) => {
+                try {
+                    const response = await fetch('/api/ml/anomaly-detection', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sensorData: sensorData.readings.filter((r: any) => r.area === area),
+                            area
+                        })
+                    });
+                    const result = await response.json();
+                    return result.success ? result.anomalies || [] : [];
+                } catch {
+                    return [];
+                }
             });
+
+            const anomalyResults = await Promise.all(anomalyPromises);
+            const allAnomalies = anomalyResults.flat();
+            setAnomalies(allAnomalies);
+
+            // Calculate health scores from anomaly detection
+            const healthScorePromises = areas.map(async (area) => {
+                try {
+                    const response = await fetch('/api/ml/anomaly-detection', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sensorData: sensorData.readings.filter((r: any) => r.area === area),
+                            area
+                        })
+                    });
+                    const result = await response.json();
+                    return [area, result.healthScore || 100];
+                } catch {
+                    return [area, 100];
+                }
+            });
+
+            const scores = await Promise.all(healthScorePromises);
+            setHealthScores(Object.fromEntries(scores));
+
+            // Predictions would require historical data - leave empty for now
+            // You can implement this when you have task history
+            setPredictions([]);
 
             setLoading(false);
         } catch (error) {

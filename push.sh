@@ -1,3 +1,3 @@
 git add .
-git commit -m "ML / AI integration"
+git commit -m "typscript auth-app-router fixed"
 git push

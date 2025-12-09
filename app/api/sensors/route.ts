@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/auth';
-import { fetchSensorData } from '@/lib/thingspeak';
+import { requireAuth } from '@/lib/auth-app-router';
+import { getLatestReading, parseReading } from '@/lib/thingspeak';
 
 /**
  * Sensors API - Aggregates sensor data for all areas
@@ -8,12 +8,11 @@ import { fetchSensorData } from '@/lib/thingspeak';
  */
 
 export async function GET(request: NextRequest) {
-    try {
-        const auth = await requireAuth(request);
-        if (!auth.success) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    // Authentication check
+    const authResult = await requireAuth(request);
+    if ('error' in authResult) return authResult.error;
 
+    try {
         //Define areas to monitor
         const areas = ['Main Lobby', 'Conference Room A', 'Office Floor 2', 'Storage Room', 'Restrooms'];
 
@@ -21,14 +20,17 @@ export async function GET(request: NextRequest) {
         const readings = await Promise.all(
             areas.map(async (area) => {
                 try {
-                    const data = await fetchSensorData(area);
+                    const rawData = await getLatestReading();
+                    if (!rawData) throw new Error('No sensor data');
+
+                    const data = parseReading(rawData);
                     return {
                         area,
                         vocLevel: data.vocLevel,
                         humidity: data.humidity,
                         temperature: data.temperature,
-                        waterUsed: data.waterUsed || 0,
-                        timestamp: new Date(),
+                        waterUsed: data.waterUsed,
+                        timestamp: new Date(data.timestamp),
                     };
                 } catch (error) {
                     // Return default data if fetch fails
