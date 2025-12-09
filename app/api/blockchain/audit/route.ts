@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/auth';
+import { requireAuth } from '@/lib/auth-app-router';
 import { blockchainAudit, type BlockData } from '@/lib/blockchain/auditTrail';
 import { connectDB } from '@/lib/db';
 import mongoose from 'mongoose';
@@ -28,12 +28,10 @@ const AuditTrail = mongoose.models.AuditTrail || mongoose.model('AuditTrail', Au
  */
 
 export async function POST(request: NextRequest) {
-    try {
-        const auth = await requireAuth(request);
-        if (!auth.success) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    const authResult = await requireAuth(request);
+    if ('error' in authResult) return authResult.error;
 
+    try {
         await connectDB();
 
         const body = await request.json();
@@ -49,7 +47,7 @@ export async function POST(request: NextRequest) {
         const blockData: BlockData = {
             taskId,
             action,
-            performedBy: auth.userId,
+            performedBy: authResult.user.id,
             timestamp: new Date(),
             data: data || {},
             metadata: metadata || {},
@@ -107,12 +105,10 @@ export async function POST(request: NextRequest) {
 
 // GET endpoint - retrieve audit trail
 export async function GET(request: NextRequest) {
-    try {
-        const auth = await requireAuth(request);
-        if (!auth.success) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    const authResult = await requireAuth(request);
+    if ('error' in authResult) return authResult.error;
 
+    try {
         await connectDB();
 
         const taskId = request.nextUrl.searchParams.get('taskId');

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth-app-router';
-import { getLatestReading, parseReading } from '@/lib/thingspeak';
+import { getLatestReading, parseSensorReading } from '@/lib/thingspeak';
 
 /**
  * Sensors API - Aggregates sensor data for all areas
@@ -23,13 +23,13 @@ export async function GET(request: NextRequest) {
                     const rawData = await getLatestReading();
                     if (!rawData) throw new Error('No sensor data');
 
-                    const data = parseReading(rawData);
+                    const data = parseSensorReading(rawData);
                     return {
                         area,
                         vocLevel: data.vocLevel,
                         humidity: data.humidity,
                         temperature: data.temperature,
-                        waterUsed: data.waterUsed,
+                        waterUsage: data.waterUsage,
                         timestamp: new Date(data.timestamp),
                     };
                 } catch (error) {
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
                         vocLevel: 0.3,
                         humidity: 50,
                         temperature: 22,
-                        waterUsed: 0,
+                        waterUsage: 0,
                         timestamp: new Date(),
                     };
                 }

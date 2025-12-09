@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/auth';
+import { requireAuth } from '@/lib/auth-app-router';
 import { cleaningPredictor } from '@/lib/ml/cleaningPredictor';
 import { connectDB } from '@/lib/db';
 
@@ -9,12 +9,10 @@ import { connectDB } from '@/lib/db';
  */
 
 export async function POST(request: NextRequest) {
-    try {
-        const auth = await requireAuth(request);
-        if (!auth.success) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    const authResult = await requireAuth(request);
+    if ('error' in authResult) return authResult.error;
 
+    try {
         await connectDB();
 
         const body = await request.json();
@@ -60,12 +58,10 @@ export async function POST(request: NextRequest) {
 
 // GET endpoint for schedule optimization
 export async function GET(request: NextRequest) {
-    try {
-        const auth = await requireAuth(request);
-        if (!auth.success) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    const authResult = await requireAuth(request);
+    if ('error' in authResult) return authResult.error;
 
+    try {
         // This would fetch predictions for all areas
         // For now, return usage info
 

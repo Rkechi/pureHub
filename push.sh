@@ -1,3 +1,3 @@
 git add .
-git commit -m "typscript auth-app-router fixed"
+git commit -m "all build errors fixed"
 git push

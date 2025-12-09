@@ -200,8 +200,8 @@ export class AnomalyDetector {
     /**
      * Get health score for an area (0-100)
      */
-    getAreaHealthScore(data: SensorReading[], area: string): number {
-        const anomalies = this.detectAnomalies(data, area);
+    async getAreaHealthScore(data: SensorReading[], area: string): Promise<number> {
+        const anomalies = await this.detectAnomalies(data, area);
         const recent = anomalies.filter(a =>
             Date.now() - new Date(a.timestamp).getTime() < 24 * 60 * 60 * 1000
         );

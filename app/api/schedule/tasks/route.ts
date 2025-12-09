@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
                         priority: newTask.priority,
                         assignedTo: newTask.assignedTo,
                         scheduledDate: newTask.date,
-                        createdBy: authResult.userId
+                        createdBy: authResult.user.id
                     },
                     metadata: {
                         timestamp: new Date(),
