@@ -1,3 +1,3 @@
 git add .
-git commit -m "IoT integration done"
+git commit -m "ML / AI integration"
 git push

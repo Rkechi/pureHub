@@ -11,7 +11,9 @@ import {
     HelpCircle,
     ChevronLeft,
     BrushCleaning,
-    X
+    X,
+    Brain,
+    Shield
 } from "lucide-react";
 
 interface SidebarProps {
@@ -28,6 +30,8 @@ export default function Sidebar({ isMobileOpen = false, onClose }: SidebarProps)
         { id: 'logs', label: 'Cleaning Logs', icon: BrushCleaning, href: '/dashboard/logs' },
         { id: 'reports', label: 'ESG Reports', icon: FileText, href: '/dashboard/reports' },
         { id: 'monitoring', label: "Live Monitoring", icon: Activity, href: '/dashboard/monitoring', badge: 'Live' },
+        { id: 'ml-analytics', label: 'ML Analytics', icon: Brain, href: '/dashboard/ml-analytics', badge: 'AI' },
+        { id: 'blockchain', label: 'Blockchain', icon: Shield, href: '/dashboard/blockchain', badge: 'New' },
         { id: 'schedule', label: 'Schedule', icon: Calendar, href: '/dashboard/schedule' },
         { id: 'team', label: 'Team', icon: Users, href: '/dashboard/team' },
     ];

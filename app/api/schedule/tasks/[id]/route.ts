@@ -106,6 +106,33 @@ export async function PUT(
             );
         }
 
+        // Create blockchain audit trail if status changed
+        if (body.status) {
+            try {
+                const blockchainAction = body.status === 'completed' ? 'completed' :
+                    body.status === 'in-progress' ? 'started' :
+                        body.status === 'verified' ? 'verified' : null;
+
+                if (blockchainAction) {
+                    await fetch(`${request.nextUrl.origin}/api/blockchain/audit`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            taskId: id,
+                            action: blockchainAction,
+                            data: {
+                                ...body,
+                                completedAt: body.completedAt,
+                                duration: body.duration
+                            }
+                        })
+                    });
+                }
+            } catch (blockchainError) {
+                console.error('Blockchain audit trail update failed:', blockchainError);
+            }
+        }
+
         return NextResponse.json({
             success: true,
             message: 'Task updated successfully',
@@ -191,6 +218,30 @@ export async function PATCH(
                 },
                 { status: 404 }
             );
+        }
+
+        // Create blockchain audit trail for status change
+        try {
+            const blockchainAction = status === 'completed' ? 'completed' :
+                status === 'in-progress' ? 'started' :
+                    status === 'verified' ? 'verified' : null;
+
+            if (blockchainAction) {
+                await fetch(`${request.nextUrl.origin}/api/blockchain/audit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        taskId: id,
+                        action: blockchainAction,
+                        data: {
+                            status,
+                            timestamp: new Date()
+                        }
+                    })
+                });
+            }
+        } catch (blockchainError) {
+            console.error('Blockchain audit trail update failed:', blockchainError);
         }
 
         return NextResponse.json({

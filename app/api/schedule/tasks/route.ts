@@ -100,6 +100,32 @@ export async function POST(request: NextRequest) {
         // Populate assignedTo details if assignedToId was provided
         const populatedTask = await Task.findById(newTask._id).populate('assignedToId', 'name email role');
 
+        // Create blockchain audit trail for task creation
+        try {
+            await fetch(`${request.nextUrl.origin}/api/blockchain/audit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    taskId: newTask._id.toString(),
+                    action: 'created',
+                    data: {
+                        area: newTask.area,
+                        priority: newTask.priority,
+                        assignedTo: newTask.assignedTo,
+                        scheduledDate: newTask.date,
+                        createdBy: authResult.userId
+                    },
+                    metadata: {
+                        timestamp: new Date(),
+                        source: 'task_creation_api'
+                    }
+                })
+            });
+        } catch (blockchainError) {
+            // Log error but don't fail task creation
+            console.error('Blockchain audit trail creation failed:', blockchainError);
+        }
+
         return NextResponse.json(
             {
                 success: true,
