@@ -1,3 +1,3 @@
 git add .
-git commit -m "all build errors fixed"
+git commit -m "nextjs updated"
 git push
