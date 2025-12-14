@@ -1,29 +1,7 @@
 "use client";
-import { useState, useEffect } from 'react';
 import { Shield, Activity } from 'lucide-react';
 
 export default function PreLoader() {
-  const [progress, setProgress] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-
-  useEffect(() => {
-    // Simulate loading progress
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setIsComplete(true), 500);
-          return 100;
-        }
-        return prev + Math.random() * 30;
-      });
-    }, 200);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  if (isComplete) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Animated background particles */}
@@ -74,43 +52,12 @@ export default function PreLoader() {
           </p>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-64 mx-auto space-y-2">
-          <div className="flex justify-between text-sm text-cyan-200">
-            <span>Loading...</span>
-            <span>{Math.round(progress)}%</span>
-          </div>
-          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur">
-            <div
-              className="h-full bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-500 rounded-full transition-all duration-300 ease-out relative"
-              style={{ width: `${progress}%` }}
-            >
-              {/* Shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
-            </div>
-          </div>
-        </div>
-
-        {/* Loading indicator */}
-        <div className="flex items-center justify-center gap-2 text-cyan-300">
-          <Activity className="w-5 h-5 animate-pulse animate-spin" />
+        {/* Loading indicator (spinner and message) */}
+        <div className="flex flex-col items-center justify-center gap-2 text-cyan-300">
+          <Activity className="w-6 h-6 animate-spin text-cyan-300" />
           <span className="text-sm">Initializing system...</span>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </div>
   );
 }

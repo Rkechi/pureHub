@@ -1,3 +1,3 @@
 git add .
-git commit -m "nextjs updated"
+git commit -m "pre-loader boot percentage removed"
 git push
