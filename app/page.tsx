@@ -151,6 +151,18 @@ export default function LandingPage() {
               >
                 About
               </a>
+              <a
+                href="/esg-procurement-alignment"
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                ESG & Procurement Alignment
+              </a>
+              <a
+                href="/pilot-programme-contact"
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                Pilot Programme
+              </a>
 
               <a
                 href="/login"
@@ -203,6 +215,18 @@ export default function LandingPage() {
                 className="block text-gray-700 hover:text-blue-600"
               >
                 About
+              </a>
+              <a
+                href="/esg-procurement-alignment"
+                className="block text-gray-700 hover:text-blue-600"
+              >
+                ESG & Procurement Alignment
+              </a>
+              <a
+                href="/pilot-programme-contact"
+                className="block text-gray-700 hover:text-blue-600"
+              >
+                Pilot Programme
               </a>
               <a
                 href="/login"

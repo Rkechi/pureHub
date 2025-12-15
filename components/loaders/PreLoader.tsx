@@ -42,4 +42,12 @@ export default function PreLoader() {
           </div>
         </div>
 
-        // PreLoader component deleted
+                {/* Loading text */}
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-bold text-white">Loading</h2>
+                  <p className="text-cyan-400 text-sm">Initializing PureHive...</p>
+                </div>
+              </div>
+            </div>
+          );
+        }

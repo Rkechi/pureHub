@@ -486,14 +486,14 @@ export default function AboutPage() {
                 <Mail className="w-8 h-8 mx-auto mb-3" />
                 <p className="font-semibold mb-1">Email</p>
                 <a href="mailto:hello@purehive.com" className="text-blue-100 hover:text-white transition-colors">
-                  admin@purehive.com
+                  admin@purehiveesg.com
                 </a>
               </div>
               <div>
                 <Phone className="w-8 h-8 mx-auto mb-3" />
                 <p className="font-semibold mb-1">Phone</p>
                 <a href="tel:+234XXXXXXXXXX" className="text-blue-100 hover:text-white transition-colors">
-                  +234 XXX XXX XXXX
+                  +44 XXX XXX XXXX
                 </a>
               </div>
               <div>
