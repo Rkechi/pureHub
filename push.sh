@@ -1,3 +1,3 @@
 git add .
-git commit -m "pre-loader boot percentage removed"
+git commit -m "Founder's profile card updated to single column layout on about page"
 git push

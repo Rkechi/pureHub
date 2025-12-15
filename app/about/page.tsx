@@ -268,7 +268,25 @@ export default function AboutPage() {
               Experts working together to deliver excellence
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-8">
+            {/* Founder Profile Card */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all text-center border-2 border-blue-200">
+              <div className="flex flex-col items-center mb-4">
+                <span className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 text-white text-4xl font-bold shadow-lg mb-2">
+                  S
+                </span>
+                <span className="text-lg font-bold text-gray-900">Samuel Oluwaseun Adekanbi</span>
+                <span className="text-blue-600 font-semibold">Founder & CEO, PureHive Ltd</span>
+              </div>
+              <div className="text-left text-gray-700 text-sm space-y-3">
+                <p><span className="font-semibold">Industry Insight:</span> Samuel worked within the NHS cleaning operations team, experiencing first-hand the compliance and documentation challenges that cleaning SMEs face. This insider perspective gives him deep understanding of operational inefficiencies and ESG reporting gaps.</p>
+                <p><span className="font-semibold">Academic & Analytical Expertise:</span> MSc in International Business with Data Analytics (Ulster University), BSc in Economics (University of Lagos). Samuel applies data-driven approaches to sustainability, IoT integration, and ESG compliance.</p>
+                <p><span className="font-semibold">Entrepreneurial Network & Access:</span> Active in the diaspora business community, Samuel has direct access to SME cleaning enterprises—ideal first adopters of PureHive. This trusted network reduces early customer acquisition barriers.</p>
+                <p><span className="font-semibold">Commitment & Leadership:</span> Fully committed as a full-time founder, Samuel has secured early traction including pilot SMEs, endorsement interest from NACC UK, and an Innovate UK grant application.</p>
+                <p><span className="font-semibold">Strategic Growth Mindset:</span> Samuel is building a well-rounded founding team, with plans to recruit a CTO in Year 1 and an ESG consultant in Year 3, demonstrating foresight in scaling a technology-led business.</p>
+              </div>
+            </div>
+            {/* Other Team Cards */}
             {team.map((member, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all text-center">
                 <div className="text-6xl mb-4">{member.icon}</div>

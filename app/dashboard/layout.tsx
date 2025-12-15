@@ -5,7 +5,7 @@ import { ReactNode, useState, useEffect } from "react";
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import ScreenSizeWarning from '@/components/ScreenSizeWarning';
-import PreLoader from '@/components/loaders/PreLoader';
+// PreLoader removed
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -13,25 +13,15 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // PreLoader removed
 
-  useEffect(() => {
-    // Simulate initial load - adjust timing as needed
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500); // Matches roughly with PreLoader's completion time
-
-    return () => clearTimeout(timer);
-  }, []);
+  // PreLoader removed
 
   const toggleMobileSidebar = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
-  // Show only PreLoader during initial load
-  if (isLoading) {
-    return <PreLoader />;
-  }
+  // PreLoader removed
 
   return (
     <div className="min-h-screen bg-gray-50 w-full overflow-x-hidden">

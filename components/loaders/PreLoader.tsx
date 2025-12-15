@@ -42,22 +42,4 @@ export default function PreLoader() {
           </div>
         </div>
 
-        {/* Brand Name */}
-        <div>
-          <h1 className="text-5xl font-bold text-white mb-2 animate-pulse">
-            PureHive
-          </h1>
-          <p className="text-cyan-300 text-lg font-medium">
-            Smart ESG Cleaning Dashboard
-          </p>
-        </div>
-
-        {/* Loading indicator (spinner and message) */}
-        <div className="flex flex-col items-center justify-center gap-2 text-cyan-300">
-          <Activity className="w-6 h-6 animate-spin text-cyan-300" />
-          <span className="text-sm">Initializing system...</span>
-        </div>
-      </div>
-    </div>
-  );
-}
+        // PreLoader component deleted
