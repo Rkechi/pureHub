@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Shield,
   Activity,
@@ -16,8 +16,27 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
-  // PreLoader removed
+  // --- All hooks must be at the top ---
+  // --- Splash/Loading Screen Logic (commented out) ---
+  // const [showSplash, setShowSplash] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setShowSplash(false), 1800);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // if (showSplash) {
+  //   return (
+  //     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-cyan-900">
+  //       <div className="flex flex-col items-center gap-4 animate-pulse">
+  //         <span className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 text-white text-4xl font-bold shadow-lg">PH</span>
+  //         <h1 className="text-3xl font-bold text-white">PureHive</h1>
+  //         <p className="text-cyan-200 text-sm">Smart ESG Cleaning Dashboard</p>
+  //         <div className="mt-4 w-32 h-1 bg-cyan-400 rounded-full animate-pulse" />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // PreLoader removed
 

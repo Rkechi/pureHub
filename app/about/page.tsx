@@ -299,36 +299,174 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Operational Plan */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Our Journey
+              Our Operational Plan
             </h2>
             <p className="text-xl text-gray-600">
-              Building the future of commercial cleaning
+              A strategic roadmap to transform the commercial cleaning sector
             </p>
           </div>
-          <div className="space-y-8">
-            {milestones.map((milestone, i) => (
-              <div key={i} className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center">
-                    <span className="text-white font-bold">{i + 1}</span>
-                  </div>
-                </div>
-                <div className="flex-1 bg-gray-50 rounded-2xl p-6">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm font-bold">
-                      {milestone.year}
-                    </span>
-                    <h3 className="text-xl font-bold text-gray-900">{milestone.title}</h3>
-                  </div>
-                  <p className="text-gray-600">{milestone.description}</p>
-                </div>
+
+          {/* Year 1 */}
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-8 mb-8 border-l-4 border-blue-600">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg">1</div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Year 1: MVP Launch & Validation</h3>
+                <p className="text-gray-600">Foundation Phase</p>
               </div>
-            ))}
+            </div>
+            <p className="text-gray-700 font-semibold mb-4">Goal: Build credibility, secure first paying customers, and refine product.</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Product Development</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Launch MVP (IoT + ESG dashboard)</li>
+                  <li>• Defer blockchain and AI features until stable adoption</li>
+                  <li>• File initial IP (dashboard design & data schema)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Customer Acquisition</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Onboard 20–30 pilot SMEs</li>
+                  <li>• Offer discounted pilots for case studies</li>
+                  <li>• Gather feedback to refine pricing tiers</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Operations</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Incorporate PureHive Ltd</li>
+                  <li>• Founder full-time commitment</li>
+                  <li>• Recruit CTO (technical co-founder or senior engineer)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Partnerships</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Secure IoT supplier MoUs (Tork, uHoo)</li>
+                  <li>• Build trade association links (NACC, Nigerian-British Chamber)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Year 2 */}
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 mb-8 border-l-4 border-purple-600">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-lg">2</div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Year 2: Market Expansion & Institutional Entry</h3>
+                <p className="text-gray-600">Growth Phase</p>
+              </div>
+            </div>
+            <p className="text-gray-700 font-semibold mb-4">Goal: Move beyond pilots into repeatable SME sales and first council/NHS entry.</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Product Development</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Launch blockchain audit trail (Hyperledger/AWS QLDB)</li>
+                  <li>• Add automated ESG reports aligned with NHS & council templates</li>
+                  <li>• Enhance dashboard UX</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Customer Acquisition</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Target 120 SMEs through trade associations</li>
+                  <li>• Secure first council contract (pilot-level)</li>
+                  <li>• Build SME referral scheme with discounts</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Operations</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Hire Sales Lead (B2B SaaS experience)</li>
+                  <li>• Hire Customer Success Manager</li>
+                  <li>• Establish Birmingham HQ + London satellite office</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Partnerships</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Apply for Innovate UK/Smart Grant</li>
+                  <li>• Pursue NHS supplier framework approval</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Year 3 */}
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-3xl p-8 mb-8 border-l-4 border-green-600">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-lg">3</div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Year 3: Scale-Up & Procurement Integration</h3>
+                <p className="text-gray-600">Acceleration Phase</p>
+              </div>
+            </div>
+            <p className="text-gray-700 font-semibold mb-4">Goal: Transition from SME-heavy revenue to mixed SME + council contracts.</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Product Development</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Deploy AI route optimisation</li>
+                  <li>• Introduce bulk council reporting dashboards</li>
+                  <li>• Strengthen IP portfolio (data benchmarking, ESG scoring)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Customer Acquisition</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Grow to 300 SMEs + 2 council contracts</li>
+                  <li>• Develop tiered licensing for local councils</li>
+                  <li>• Explore EU pilot expansion (Ireland/Netherlands)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Operations</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Hire ESG Consultant (in-house compliance expertise)</li>
+                  <li>• Expand sales and support teams</li>
+                  <li>• Standardise onboarding to reduce CAC</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Partnerships</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Collaborate with FM software firms (API integrations)</li>
+                  <li>• Engage sustainability certification bodies (BREEAM, ISO 14001)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Years 4-5 */}
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-3xl p-8 border-l-4 border-orange-600">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-lg">4-5</div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Years 4–5: National & International Scale</h3>
+                <p className="text-gray-600">Market Leadership Phase</p>
+              </div>
+            </div>
+            <p className="text-gray-700 font-semibold mb-4">Goal: Become a recognised ESG compliance verification engine in the UK cleaning sector, with EU growth entry.</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="col-span-2">
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start gap-2"><span className="text-orange-600 font-bold">→</span> National rollout across 1,000+ SMEs</li>
+                  <li className="flex items-start gap-2"><span className="text-orange-600 font-bold">→</span> 5–10 council contracts secured</li>
+                  <li className="flex items-start gap-2"><span className="text-orange-600 font-bold">→</span> Explore expansion into broader facilities management (FM SaaS + ESG compliance)</li>
+                  <li className="flex items-start gap-2"><span className="text-orange-600 font-bold">→</span> EU pilot programmes launched</li>
+                  <li className="flex items-start gap-2"><span className="text-orange-600 font-bold">→</span> <span className="font-bold">Revenues exceeding £3M, net profit margins 40–45%</span></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -348,7 +486,7 @@ export default function AboutPage() {
                 <Mail className="w-8 h-8 mx-auto mb-3" />
                 <p className="font-semibold mb-1">Email</p>
                 <a href="mailto:hello@purehive.com" className="text-blue-100 hover:text-white transition-colors">
-                  hello@purehive.com
+                  admin@purehive.com
                 </a>
               </div>
               <div>
@@ -361,7 +499,7 @@ export default function AboutPage() {
               <div>
                 <MapPin className="w-8 h-8 mx-auto mb-3" />
                 <p className="font-semibold mb-1">Location</p>
-                <p className="text-blue-100">Lagos, Nigeria</p>
+                <p className="text-blue-100">Birmingham, West Midlands</p>
               </div>
             </div>
             <div className="mt-12 text-center">

@@ -1,3 +1,3 @@
 git add .
-git commit -m "Founder's profile card updated to single column layout on about page"
+git commit -m "Updating contact information and location in about page"
 git push
