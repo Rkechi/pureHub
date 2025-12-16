@@ -326,7 +326,7 @@ export default function AboutPage() {
                 <h4 className="font-bold text-gray-900 mb-2">Product Development</h4>
                 <ul className="space-y-1 text-sm text-gray-700">
                   <li>• Launch MVP (IoT + ESG dashboard)</li>
-                  <li>• Defer blockchain and AI features until stable adoption</li>
+                  <li>• Blockchain and AI features integrated and adopted</li>
                   <li>• File initial IP (dashboard design & data schema)</li>
                 </ul>
               </div>
@@ -370,7 +370,7 @@ export default function AboutPage() {
               <div>
                 <h4 className="font-bold text-gray-900 mb-2">Product Development</h4>
                 <ul className="space-y-1 text-sm text-gray-700">
-                  <li>• Launch blockchain audit trail (Hyperledger/AWS QLDB)</li>
+                  <li>• Launch blockchain audit trail</li>
                   <li>• Add automated ESG reports aligned with NHS & council templates</li>
                   <li>• Enhance dashboard UX</li>
                 </ul>
