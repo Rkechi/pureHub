@@ -1,9 +1,9 @@
 "use client";
 import { useState } from 'react';
-import { 
-  Shield, 
-  CheckCircle, 
-  Users, 
+import {
+  Shield,
+  CheckCircle,
+  Users,
   TrendingUp,
   Award,
   Clock,
@@ -175,14 +175,14 @@ export default function PilotProgrammePage() {
               Be among the first 20-30 cleaning SMEs to transform your business with PureHive—at 50% off for 6 months.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
+              <a
                 href="#apply"
                 className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center gap-2"
               >
                 Apply Now
                 <ArrowRight className="w-5 h-5" />
               </a>
-              <a 
+              <a
                 href="#details"
                 className="px-8 py-4 bg-white text-gray-700 border-2 border-gray-300 rounded-xl font-semibold hover:border-purple-600 hover:text-purple-600 transition-all"
               >
@@ -265,7 +265,7 @@ export default function PilotProgrammePage() {
                 {i < timeline.length - 1 && (
                   <div className="hidden md:block absolute top-20 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 z-10"></div>
                 )}
-                
+
                 <div className="flex items-center justify-between mb-6">
                   <div className="text-sm font-bold text-purple-600 bg-purple-100 px-4 py-2 rounded-lg">
                     {phase.phase}
@@ -276,7 +276,7 @@ export default function PilotProgrammePage() {
                 </div>
 
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">{phase.title}</h3>
-                
+
                 <div className="space-y-3">
                   {phase.activities.map((activity, j) => (
                     <div key={j} className="flex items-start gap-2">
@@ -397,7 +397,7 @@ export default function PilotProgrammePage() {
                     type="text"
                     required
                     value={formData.companyName}
-                    onChange={(e) => setFormData({...formData, companyName: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                     placeholder="Your company name"
                   />
@@ -411,7 +411,7 @@ export default function PilotProgrammePage() {
                     type="text"
                     required
                     value={formData.contactName}
-                    onChange={(e) => setFormData({...formData, contactName: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                     placeholder="Your full name"
                   />
@@ -429,7 +429,7 @@ export default function PilotProgrammePage() {
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                       placeholder="email@company.com"
                     />
@@ -446,7 +446,7 @@ export default function PilotProgrammePage() {
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                       placeholder="+44 XXXX XXXXXX"
                     />
@@ -461,7 +461,7 @@ export default function PilotProgrammePage() {
                   </label>
                   <select
                     value={formData.employees}
-                    onChange={(e) => setFormData({...formData, employees: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, employees: e.target.value })}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                   >
                     <option value="">Select range...</option>
@@ -478,7 +478,7 @@ export default function PilotProgrammePage() {
                   </label>
                   <select
                     value={formData.currentClients}
-                    onChange={(e) => setFormData({...formData, currentClients: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, currentClients: e.target.value })}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                   >
                     <option value="">Select type...</option>
@@ -497,7 +497,7 @@ export default function PilotProgrammePage() {
                 <textarea
                   rows={4}
                   value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
                   placeholder="Tell us about your ESG compliance needs and goals..."
                 />
@@ -563,7 +563,7 @@ export default function PilotProgrammePage() {
           <p className="text-xl text-purple-100 mb-8">
             Only 30 pilot spots available. Apply today and transform your cleaning business.
           </p>
-          <a 
+          <a
             href="#apply"
             className="inline-block px-12 py-5 bg-white text-purple-600 rounded-xl font-bold text-lg hover:shadow-2xl transition-all"
           >
@@ -571,6 +571,81 @@ export default function PilotProgrammePage() {
           </a>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-400 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto max-[320px]:px-3">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Shield className="w-8 h-8 text-blue-500" />
+                <span className="text-xl font-bold text-white">PureHive</span>
+              </div>
+              <p className="text-sm max-[320px]:text-xs">
+                Transforming cleaning operations with IoT, AI, and blockchain
+                technology.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-white mb-4">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#features" className="hover:text-white">
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#how-it-works" className="hover:text-white">
+                    How It Works
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white">
+                    Pricing
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#about" className="hover:text-white transition-colors">
+                    Careers
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-white mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Terms
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Security
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 pt-8 text-center text-sm">
+            <p>&copy; 2025 PureHive. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

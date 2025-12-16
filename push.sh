@@ -1,3 +1,3 @@
 git add .
-git commit -m "pilot-programme contact update"
+git commit -m "pilot-programme contact (footer) update"
 git push
