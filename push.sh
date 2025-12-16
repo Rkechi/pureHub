@@ -1,3 +1,3 @@
 git add .
-git commit -m "navbar linking update"
+git commit -m "career, security, legal, and Terms pages added"
 git push

@@ -445,7 +445,7 @@ export default function ESGProcurementPage() {
                     </div>
                 </div>
             </section>
-           
+
             {/* Footer */}
             <footer className="bg-gray-900 text-gray-400 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto max-[320px]:px-3">
@@ -486,7 +486,7 @@ export default function ESGProcurementPage() {
                             <h4 className="font-semibold text-white mb-4">Company</h4>
                             <ul className="space-y-2 text-sm">
                                 <li>
-                                    <a href="#about" className="hover:text-white transition-colors">
+                                    <a href="/careers" className="hover:text-white transition-colors">
                                         Careers
                                     </a>
                                 </li>
@@ -497,17 +497,17 @@ export default function ESGProcurementPage() {
                             <h4 className="font-semibold text-white mb-4">Legal</h4>
                             <ul className="space-y-2 text-sm">
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">
+                                    <a href="/privacy" className="hover:text-white transition-colors">
                                         Privacy
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">
+                                    <a href="/terms" className="hover:text-white transition-colors">
                                         Terms
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">
+                                    <a href="/security" className="hover:text-white transition-colors">
                                         Security
                                     </a>
                                 </li>
