@@ -133,50 +133,17 @@ export default function LandingPage() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              <a
-                href="#features"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Features
+              <a href="/features" className="text-gray-700 hover:text-blue-600 transition-colors">Features</a>
+              <a href="/how-it-works" className="text-gray-700 hover:text-blue-600 transition-colors">How It Works</a>
+              <a href="/about" className="text-gray-700 hover:text-blue-600 transition-colors">About</a>
+              <a href="/esg-procurement-alignment" className="text-gray-700 hover:text-blue-600 transition-colors">ESG & Procurement Alignment</a>
+              <a href="/pilot-programme-contact" className="text-gray-700 hover:text-blue-600 transition-colors">Pilot Programme</a>
+              <a href="/pricing" className="relative text-purple-600 font-semibold hover:text-purple-700 transition-colors">
+                Pricing
+                <span className="absolute -top-2.5 -right-3 px-2 py-0.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-full">New</span>
               </a>
-              <a
-                href="#how-it-works"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                How It Works
-              </a>
-              <a
-                href="/about"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                About
-              </a>
-              <a
-                href="/esg-procurement-alignment"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                ESG & Procurement Alignment
-              </a>
-              <a
-                href="/pilot-programme-contact"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Pilot Programme
-              </a>
-
-              <a
-                href="/login"
-                className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
-              >
-                Login
-              </a>
-
-              <a
-                href="/register"
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all"
-              >
-                Get Started
-              </a>
+              <a href="/login" className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">Login</a>
+              <a href="/register" className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all">Get Started</a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -198,48 +165,17 @@ export default function LandingPage() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-4 py-6 space-y-4 max-[320px]:px-3 max-[320px]:py-4">
-              <a
-                href="#features"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Features
+              <a href="#features" className="block text-gray-700 hover:text-blue-600">Features</a>
+              <a href="#how-it-works" className="block text-gray-700 hover:text-blue-600">How It Works</a>
+              <a href="#about" className="block text-gray-700 hover:text-blue-600">About</a>
+              <a href="/esg-procurement-alignment" className="block text-gray-700 hover:text-blue-600">ESG & Procurement Alignment</a>
+              <a href="/pilot-programme-contact" className="block text-gray-700 hover:text-blue-600">Pilot Programme</a>
+              <a href="/pricing" className="block text-purple-600 font-semibold hover:text-purple-700 relative inline-block">
+                Pricing
+                <span className="ml-2 px-2 py-0.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-full">New</span>
               </a>
-              <a
-                href="#how-it-works"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                How It Works
-              </a>
-              <a
-                href="#about"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                About
-              </a>
-              <a
-                href="/esg-procurement-alignment"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                ESG & Procurement Alignment
-              </a>
-              <a
-                href="/pilot-programme-contact"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Pilot Programme
-              </a>
-              <a
-                href="/login"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Login
-              </a>
-              <a
-                href="/register"
-                className="block px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center rounded-lg hover:shadow-lg transition-all"
-              >
-                Get Started
-              </a>
+              <a href="/login" className="block text-gray-700 hover:text-blue-600">Login</a>
+              <a href="/register" className="block px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center rounded-lg hover:shadow-lg transition-all">Get Started</a>
             </div>
           </div>
         )}
@@ -430,6 +366,153 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Pricing Preview Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50 max-[320px]:px-3">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-6">
+              <BarChart3 className="w-4 h-4" />
+              Simple, Transparent Pricing
+            </div>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4 max-[320px]:text-2xl">
+              Choose Your Perfect Plan
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto max-[320px]:text-sm">
+              Affordable ESG compliance for SMEs. Start free, scale as you grow.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12 max-[320px]:gap-4">
+            {/* Starter Plan */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all max-[320px]:p-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4">
+                <Activity className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2 max-[320px]:text-xl">Starter</h3>
+              <p className="text-gray-600 mb-4 text-sm">Perfect for small teams</p>
+              <div className="mb-6">
+                <span className="text-4xl font-bold text-gray-900">£99</span>
+                <span className="text-gray-600">/mo</span>
+              </div>
+              <ul className="space-y-3 mb-6 text-gray-700">
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Up to 5 team members</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>1 IoT sensor included</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Basic ESG dashboard</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>50 logs per month</span>
+                </li>
+              </ul>
+              <a
+                href="/register"
+                className="block w-full text-center px-6 py-3 bg-gray-100 text-gray-900 rounded-xl font-semibold hover:bg-gray-200 transition-all"
+              >
+                Start Free Trial
+              </a>
+            </div>
+
+            {/* Professional Plan - Popular */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all ring-4 ring-purple-500 scale-105 relative max-[320px]:p-4 max-[320px]:scale-100">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold text-sm shadow-lg">
+                Most Popular
+              </div>
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-4">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2 max-[320px]:text-xl">Professional</h3>
+              <p className="text-gray-600 mb-4 text-sm">For growing SMEs</p>
+              <div className="mb-6">
+                <span className="text-4xl font-bold text-gray-900">£300</span>
+                <span className="text-gray-600">/mo</span>
+              </div>
+              <ul className="space-y-3 mb-6 text-gray-700">
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Up to 20 team members</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>3 IoT sensors included</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Unlimited logs</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Blockchain verification</span>
+                </li>
+              </ul>
+              <a
+                href="/register"
+                className="block w-full text-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
+              >
+                Get Started
+              </a>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all max-[320px]:p-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-4">
+                <BarChart3 className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2 max-[320px]:text-xl">Enterprise</h3>
+              <p className="text-gray-600 mb-4 text-sm">For large operations</p>
+              <div className="mb-6">
+                <span className="text-4xl font-bold text-gray-900">Custom</span>
+              </div>
+              <ul className="space-y-3 mb-6 text-gray-700">
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Unlimited members</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>10+ IoT sensors</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Custom dashboard</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>24/7 support</span>
+                </li>
+              </ul>
+              <a
+                href="/pricing"
+                className="block w-full text-center px-6 py-3 bg-gray-100 text-gray-900 rounded-xl font-semibold hover:bg-gray-200 transition-all"
+              >
+                Contact Sales
+              </a>
+            </div>
+          </div>
+
+          {/* View Full Pricing CTA */}
+          <div className="text-center">
+            <a
+              href="/pricing"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all max-[320px]:px-6 max-[320px]:py-3"
+            >
+              View Full Pricing Details
+              <ArrowRight className="w-5 h-5" />
+            </a>
+            <p className="text-gray-600 mt-4 text-sm">
+              14-day free trial • No credit card required • Cancel anytime
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-[320px]:px-3">
         <div className="max-w-4xl mx-auto">
@@ -479,17 +562,17 @@ export default function LandingPage() {
               <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#features" className="hover:text-white">
+                  <a href="/features" className="hover:text-white">
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="#how-it-works" className="hover:text-white">
+                  <a href="/how-it-works" className="hover:text-white">
                     How It Works
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <a href="/pricing" className="hover:text-white">
                     Pricing
                   </a>
                 </li>
