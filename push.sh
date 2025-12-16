@@ -1,3 +1,3 @@
 git add .
-git commit -m "Update on the Navigation Bar and About Page"
+git commit -m "esg-procurement-alignment update"
 git push
