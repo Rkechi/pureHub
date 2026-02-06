@@ -12,16 +12,6 @@ export interface IUser extends Document {
     isActive: boolean;
     createdAt: Date;
     updatedAt: Date;
-    // Stripe subscription fields
-    stripeCustomerId?: string;
-    stripeSubscriptionId?: string;
-    subscriptionStatus?: 'active' | 'trialing' | 'past_due' | 'canceled' | 'incomplete';
-    subscriptionPlan?: 'starter' | 'professional' | 'enterprise';
-    subscriptionPeriod?: 'monthly' | 'annual';
-    currentPeriodStart?: Date;
-    currentPeriodEnd?: Date;
-    cancelAtPeriodEnd?: boolean;
-    trialEnd?: Date;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -32,16 +22,7 @@ const UserSchema = new Schema<IUser>({
         minlength: [2, 'Name must be at least 2 characters long'],
         maxlength: [100, 'Name must be at most 100 characters long']
     },
-    // Stripe subscription fields
-    stripeCustomerId: { type: String },
-    stripeSubscriptionId: { type: String },
-    subscriptionStatus: { type: String, enum: ['active', 'trialing', 'past_due', 'canceled', 'incomplete'] },
-    subscriptionPlan: { type: String, enum: ['starter', 'professional', 'enterprise'] },
-    subscriptionPeriod: { type: String, enum: ['monthly', 'annual'] },
-    currentPeriodStart: { type: Date },
-    currentPeriodEnd: { type: Date },
-    cancelAtPeriodEnd: { type: Boolean },
-    trialEnd: { type: Date },
+
     email: {
         type: String,
         required: [true, 'Email is required'],

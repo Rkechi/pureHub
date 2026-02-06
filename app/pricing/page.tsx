@@ -1,8 +1,8 @@
 "use client";
 import { useState } from 'react';
-import { 
-  Shield, 
-  Check, 
+import {
+  Shield,
+  Check,
   X,
   Zap,
   Star,
@@ -178,21 +178,19 @@ export default function PricingPage() {
           <div className="inline-flex items-center gap-4 bg-white rounded-full p-2 shadow-lg">
             <button
               onClick={() => setBillingCycle('monthly')}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
-                billingCycle === 'monthly'
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
+              className={`px-6 py-3 rounded-full font-semibold transition-all ${billingCycle === 'monthly'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                : 'text-gray-600 hover:text-gray-900'
+                }`}
             >
               Monthly
             </button>
             <button
               onClick={() => setBillingCycle('annual')}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
-                billingCycle === 'annual'
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
+              className={`px-6 py-3 rounded-full font-semibold transition-all ${billingCycle === 'annual'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                : 'text-gray-600 hover:text-gray-900'
+                }`}
             >
               Annual
               <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
@@ -210,9 +208,8 @@ export default function PricingPage() {
             {plans.map((plan, i) => (
               <div
                 key={i}
-                className={`relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all ${
-                  plan.popular ? 'ring-4 ring-purple-500 scale-105' : ''
-                }`}
+                className={`relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all ${plan.popular ? 'ring-4 ring-purple-500 scale-105' : ''
+                  }`}
               >
                 {/* Popular Badge */}
                 {plan.popular && (
@@ -251,24 +248,13 @@ export default function PricingPage() {
                 <a
                   href={
                     plan.name === 'Enterprise'
-                      ? '/pilot-programme-contact'
-                      : `/checkout?plan=${plan.name.toLowerCase()}&period=${billingCycle}`
+                      ? '/contact'
+                      : '/register'
                   }
-                  className={`block w-full text-center px-6 py-4 rounded-xl font-semibold transition-all mb-8 ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-xl'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                  }`}
-                  onClick={e => {
-                    if (plan.name !== 'Enterprise') {
-                      // Check if user is authenticated (simple client-side check, replace with real auth logic)
-                      const isLoggedIn = Boolean(localStorage.getItem('token'));
-                      if (!isLoggedIn) {
-                        e.preventDefault();
-                        window.location.href = '/login?redirect=/checkout?plan=' + plan.name.toLowerCase() + '&period=' + billingCycle;
-                      }
-                    }
-                  }}
+                  className={`block w-full text-center px-6 py-4 rounded-xl font-semibold transition-all mb-8 ${plan.popular
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-xl'
+                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    }`}
                 >
                   {plan.cta}
                 </a>
@@ -332,13 +318,13 @@ export default function PricingPage() {
               Only £150/month (normally £300)
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
+              <a
                 href="/pilot-programme"
                 className="px-8 py-4 bg-white text-green-600 rounded-xl font-semibold hover:shadow-xl transition-all"
               >
                 Learn More About Pilot
               </a>
-              <a 
+              <a
                 href="/register"
                 className="px-8 py-4 bg-green-700 text-white rounded-xl font-semibold hover:bg-green-800 transition-all"
               >
@@ -383,16 +369,9 @@ export default function PricingPage() {
           <p className="text-xl text-gray-600 mb-8">
             Start your 14-day free trial today. No credit card required.
           </p>
-          <a 
-            href="/checkout?plan=starter&period=monthly"
+          <a
+            href="/register"
             className="inline-flex items-center gap-2 px-12 py-5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition-all"
-            onClick={e => {
-              const isLoggedIn = Boolean(localStorage.getItem('token'));
-              if (!isLoggedIn) {
-                e.preventDefault();
-                window.location.href = '/login?redirect=/checkout?plan=starter&period=monthly';
-              }
-            }}
           >
             Start Free Trial
             <ArrowRight className="w-6 h-6" />
