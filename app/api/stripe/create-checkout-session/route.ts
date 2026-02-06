@@ -39,6 +39,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    // Cast to correct types after validation
+    const planKey = plan as keyof typeof priceIds;
+    const periodKey = period as keyof (typeof priceIds)[typeof planKey];
+
     // Get or create Stripe customer
     let stripeCustomerId = user.stripeCustomerId;
     if (!stripeCustomerId) {
@@ -59,7 +63,7 @@ export async function POST(req: Request) {
       customer: stripeCustomerId,
       line_items: [
         {
-          price: priceIds[plan][period],
+          price: priceIds[planKey][periodKey],
           quantity: 1,
         },
       ],

@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import stripe from '@/lib/stripe';
+import Stripe from 'stripe';
 import { connectDB } from '@/lib/db';
 import User from '@/models/User';
 import { resend } from '@/lib/resend';
@@ -43,12 +44,11 @@ export async function POST(req: Request) {
         const userId = session.metadata?.userId;
         if (userId && session.subscription) {
           const user = await User.findByIdAndUpdate(userId, {
-            stripeSubscriptionId: session.subscription,
+            stripeSubscriptionId: session.subscription as string,
             subscriptionStatus: 'trialing',
-            subscriptionPlan: session.metadata.plan,
-            subscriptionPeriod: session.metadata.period,
+            subscriptionPlan: session.metadata?.plan as any,
+            subscriptionPeriod: session.metadata?.period as any,
             currentPeriodStart: new Date(session.created * 1000),
-            trialEnd: session.trial_end ? new Date(session.trial_end * 1000) : undefined,
           }, { new: true });
           // Send trial started email
           if (user && user.email) {
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       }
       case 'customer.subscription.updated':
       case 'customer.subscription.created': {
-        const sub = event.data.object;
+        const sub = event.data.object as any;
         const user = await User.findOne({ stripeSubscriptionId: sub.id });
         if (user) {
           await User.findByIdAndUpdate(user._id, {
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
         break;
       }
       case 'customer.subscription.deleted': {
-        const sub = event.data.object;
+        const sub = event.data.object as any;
         const user = await User.findOne({ stripeSubscriptionId: sub.id });
         if (user) {
           await User.findByIdAndUpdate(user._id, {
@@ -119,8 +119,8 @@ export async function POST(req: Request) {
         break;
       }
       case 'invoice.payment_failed': {
-        const invoice = event.data.object;
-        const user = await User.findOne({ stripeSubscriptionId: invoice.subscription });
+        const invoice = event.data.object as any;
+        const user = await User.findOne({ stripeSubscriptionId: invoice.subscription as string });
         if (user) {
           await User.findByIdAndUpdate(user._id, {
             subscriptionStatus: 'past_due',
