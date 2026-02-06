@@ -249,12 +249,26 @@ export default function PricingPage() {
 
                 {/* CTA Button */}
                 <a
-                  href="/register"
+                  href={
+                    plan.name === 'Enterprise'
+                      ? '/pilot-programme-contact'
+                      : `/checkout?plan=${plan.name.toLowerCase()}&period=${billingCycle}`
+                  }
                   className={`block w-full text-center px-6 py-4 rounded-xl font-semibold transition-all mb-8 ${
                     plan.popular
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-xl'
                       : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
+                  onClick={e => {
+                    if (plan.name !== 'Enterprise') {
+                      // Check if user is authenticated (simple client-side check, replace with real auth logic)
+                      const isLoggedIn = Boolean(localStorage.getItem('token'));
+                      if (!isLoggedIn) {
+                        e.preventDefault();
+                        window.location.href = '/login?redirect=/checkout?plan=' + plan.name.toLowerCase() + '&period=' + billingCycle;
+                      }
+                    }
+                  }}
                 >
                   {plan.cta}
                 </a>
@@ -370,8 +384,15 @@ export default function PricingPage() {
             Start your 14-day free trial today. No credit card required.
           </p>
           <a 
-            href="/register"
+            href="/checkout?plan=starter&period=monthly"
             className="inline-flex items-center gap-2 px-12 py-5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition-all"
+            onClick={e => {
+              const isLoggedIn = Boolean(localStorage.getItem('token'));
+              if (!isLoggedIn) {
+                e.preventDefault();
+                window.location.href = '/login?redirect=/checkout?plan=starter&period=monthly';
+              }
+            }}
           >
             Start Free Trial
             <ArrowRight className="w-6 h-6" />

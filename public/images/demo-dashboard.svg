@@ -1,0 +1,38 @@
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#f8fafc"/>
+  <rect x="50" y="50" width="1100" height="700" rx="20" fill="white" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="50" y="50" width="1100" height="80" rx="20" fill="#f1f5f9"/>
+  <text x="80" y="100" font-family="Arial" font-size="24" fill="#334155" font-weight="bold">PureHive - Compliance Evidence Overview</text>
+  
+  <!-- Cards -->
+  <rect x="80" y="160" width="240" height="120" rx="10" fill="white" stroke="#cbd5e1"/>
+  <text x="100" y="190" font-family="Arial" font-size="14" fill="#64748b">Sites Covered</text>
+  <text x="100" y="230" font-family="Arial" font-size="24" fill="#0f172a" font-weight="bold">12 Active Sites</text>
+  
+  <rect x="340" y="160" width="240" height="120" rx="10" fill="white" stroke="#cbd5e1"/>
+  <text x="360" y="190" font-family="Arial" font-size="14" fill="#64748b">Evidence Items</text>
+  <text x="360" y="230" font-family="Arial" font-size="24" fill="#0f172a" font-weight="bold">1,248 Records</text>
+  
+  <rect x="600" y="160" width="240" height="120" rx="10" fill="white" stroke="#cbd5e1"/>
+  <text x="620" y="190" font-family="Arial" font-size="14" fill="#64748b">Audit Readiness</text>
+  <text x="620" y="230" font-family="Arial" font-size="24" fill="#22c55e" font-weight="bold">Up to date</text>
+  
+  <rect x="860" y="160" width="240" height="120" rx="10" fill="white" stroke="#cbd5e1"/>
+  <text x="880" y="190" font-family="Arial" font-size="14" fill="#64748b">Social Value</text>
+  <text x="880" y="230" font-family="Arial" font-size="24" fill="#0f172a" font-weight="bold">32 Logged</text>
+  
+  <!-- Main Table Area -->
+  <rect x="80" y="320" width="760" height="400" rx="10" fill="white" stroke="#cbd5e1"/>
+  <rect x="80" y="320" width="760" height="50" rx="10" fill="#f8fafc"/>
+  <text x="100" y="350" font-family="Arial" font-size="14" fill="#475569" font-weight="bold">Date</text>
+  <text x="200" y="350" font-family="Arial" font-size="14" fill="#475569" font-weight="bold">Site</text>
+  <text x="400" y="350" font-family="Arial" font-size="14" fill="#475569" font-weight="bold">Activity</text>
+  <text x="700" y="350" font-family="Arial" font-size="14" fill="#475569" font-weight="bold">Status</text>
+  
+  <!-- Side Panel -->
+  <rect x="860" y="320" width="240" height="400" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="880" y="350" font-family="Arial" font-size="16" fill="#334155" font-weight="bold">Compliance Categories</text>
+  <text x="880" y="390" font-family="Arial" font-size="14" fill="#16a34a">✓ Service Delivery</text>
+  <text x="880" y="430" font-family="Arial" font-size="14" fill="#16a34a">✓ Health & Safety</text>
+  <text x="880" y="470" font-family="Arial" font-size="14" fill="#16a34a">✓ Workforce & Training</text>
+</svg>
